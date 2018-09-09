@@ -1,7 +1,8 @@
-global.Vue = require("vue/dist/vue");
+let Vue = require("vue/dist/vue");
 let appRoot = require(`${__dirname}/components/app`);
 let vMaterial = require("vue-material").default;
 let vRouter = require("vue-router");
+let talk = require(`${__dirname}/../../sharedChannel.js`);
 
 Vue.use(vMaterial);
 Vue.use(vRouter);

@@ -55,16 +55,18 @@ gulp.task("wjs", function() {
 			],
 			resolve: {
 				alias: {
+					'vue$': 'vue/dist/vue.esm.js',
 					projectRoot: __dirname,
-					webroot: path.join(__dirname,"web/mobile/src")
+					webroot: path.join(__dirname,"web/mobile/src"),
+					components: path.join(__dirname,"web/mobile/src/components")
 				}
 			}
 		}))
-		.pipe(gulp.dest("web/mobile/src"))
+		.pipe(gulp.dest("web/mobile/dist"))
 });
 gulp.task("whtml", function() {
 	return gulp.src("web/mobile/src/**/*.html")
-		.pipe(gulp.dest("web/mobile/dest"));
+		.pipe(gulp.dest("web/mobile/dist"));
 });
 
 // Build Groups
