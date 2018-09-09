@@ -4,6 +4,7 @@ let path = require("path");
 let webpack = require("webpack-stream");
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
 
+// Electron rendering
 gulp.task("vue", function() {
 	return gulp.src("ui/src/components/**/*.vue")
 		.pipe(vueify())
@@ -18,6 +19,7 @@ gulp.task("html", function() {
 		.pipe(gulp.dest("ui/dist/"));
 });
 
+// Web rendering
 gulp.task("wjs", function() {
 	return gulp.src("web/mobile/src/main.js")
 		.pipe(webpack({
@@ -61,12 +63,15 @@ gulp.task("wjs", function() {
 		.pipe(gulp.dest("web/mobile/src"))
 });
 gulp.task("whtml", function() {
-
+	return gulp.src("web/mobile/src/**/*.html")
+		.pipe(gulp.dest("web/mobile/dest"));
 });
 
+// Build Groups
 gulp.task("electron",["vue","js","html"]);
 gulp.task("web",["wjs","whtml"]);
 
+// Build Scripts
 gulp.task("build",["electron","web"]);
 gulp.task("test",["build"],function() {
 	require("child_process").execSync(`"${__dirname}/node_modules/electron/dist/electron" ./`,{
