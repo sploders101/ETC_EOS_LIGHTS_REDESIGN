@@ -1,13 +1,17 @@
 {
-  "dependencies": {
-    "animejs": "https://github.com/sploders101/anime.git",
-    "electron": "^2.0.8",
-    "gulp": "^3.9.1",
-    "gulp-vueify": "^0.0.3",
-    "node-sass": "^4.9.3",
-    "vue": "^2.5.17",
-    "vue-devtools": "^4.1.4",
-    "vue-material": "^1.0.0-beta-10.2",
-    "vue-router": "^3.0.1"
-  }
+	"dependencies": {
+		"animejs": "https://github.com/sploders101/anime.git",
+		"vue": "^2.5.17",
+		"vue-devtools": "^4.1.4",
+		"vue-material": "^1.0.0-beta-10.2",
+		"vue-router": "^3.0.1"
+	},
+	"devDependencies": {
+		"electron": "^2.0.8",
+		"gulp": "^3.9.1",
+		"node-sass": "^4.9.3",
+		"vue-loader": "^15.4.1",
+		"gulp-vueify": "^0.0.3",
+		"webpack-stream": "^5.1.1"
+	}
 }
