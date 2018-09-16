@@ -1,18 +1,39 @@
 <template>
-  <h2>Hello from {{text}}</h2>
+	<div class="root">
+		<titlebar>
+			<md-button slot="menubtn" class="md-icon-button" @click="menuVisible = !menuVisible">
+				<md-icon>menu</md-icon>
+			</md-button>
+		</titlebar>
+		<navlist :active.sync="menuVisible" />
+		<router-view />
+	</div>
 </template>
 
-<script>
+<script lang="ts">
+
+let {ipcRenderer} = require("electron");
+
 export default {
-  name: 'test',
-  data () {
-    return {
-       text: ''
-    }
-  }
+	components: {
+		titlebar: require('./components/header.vue'),
+		navlist: require('./components/navlist.vue')
+	},
+	data() {
+		return {
+			menuVisible: false
+		}
+	},
+	mounted() {
+		ipcRenderer.send("done");
+	}
 }
 </script>
 
-<script lang="scss">
-
-</script>
+<style lang="scss">
+div.root {
+	h2 {
+		color: red;
+	}
+}
+</style>
