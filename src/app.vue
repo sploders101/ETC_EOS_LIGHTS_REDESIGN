@@ -6,13 +6,38 @@
 			</md-button>
 		</titlebar>
 		<navlist :active.sync="menuVisible" />
-		<router-view />
+		<router-view></router-view>
 	</div>
 </template>
 
 <script lang="ts">
 
 let {ipcRenderer} = require("electron");
+let Router = require("vue-router");
+
+let home = require('./pages/home');
+let fx = require('./pages/fx');
+let faders = require('./pages/faders');
+
+let router:Router = new Router({
+	routes: [
+		{
+			path: "./",
+			name: "Home",
+			component: home
+		},
+		{
+			path: "./fx",
+			name: "FX",
+			component: fx
+		},
+		{
+			path: "./faders",
+			name: "Faders",
+			component: faders
+		}
+	]
+});
 
 export default {
 	components: {
@@ -24,6 +49,7 @@ export default {
 			menuVisible: false
 		}
 	},
+	router: router,
 	mounted() {
 		ipcRenderer.send("done");
 	}

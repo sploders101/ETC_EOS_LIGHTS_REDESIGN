@@ -1,6 +1,6 @@
 import { app,BrowserWindow,ipcMain } from 'electron';
 import { enableLiveReload } from 'electron-compile';
-import {WindowState} from './interfaces';
+// import {WindowState} from './interfaces';
 
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -33,11 +33,16 @@ function start() {
 		// transparent: true
 	});
 
-	// ipcMain.once('done', function() {
+	if(isDevMode) {
 		mainWindow.show();
 		mainWindow.setFullScreen(false);
 		mainWindow.maximize();
-	// });
+	}
+	ipcMain.once('done', function() {
+		mainWindow.show();
+		mainWindow.setFullScreen(false);
+		mainWindow.maximize();
+	});
 	ipcMain.on('window', function(_:any,action:string) {
 		switch(action) {
 			case 'minimize':
@@ -65,9 +70,11 @@ function start() {
 	mainWindow.loadURL(`file://${__dirname}/index.html`);
 
 	// Emitted when the window is closed.
-	mainWindow.on('closed', () => {
-		mainWindow = null;
-	});
+	// Typescript error when dereferencing, and the main window should always
+	// be open unless closing the app
+	// mainWindow.on('closed', () => {
+	// 	mainWindow = null;
+	// });
 
 };
 

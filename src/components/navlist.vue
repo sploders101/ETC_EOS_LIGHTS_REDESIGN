@@ -1,27 +1,35 @@
 <template>
-	<md-drawer :md-active="active" @update:mdActive="$emit('update:active',$event)">
+	<md-drawer clipped :md-active="active" @update:mdActive="$emit('update:active',$event)">
 		<md-toolbar class="md-transparent" md-elevation="0">Navigation</md-toolbar>
 
 		<md-list>
-			<md-list-item>
-				<md-icon>move_to_inbox</md-icon>
-				<span class="md-list-item-text">Inbox</span>
-			</md-list-item>
+			<router-link @click.native="$emit('update:active',false);" :to="{name: 'Home'}">
+				<md-list-item>
+						<md-icon>home</md-icon>
+						<span class="md-list-item-text">Home</span>
+				</md-list-item>
+			</router-link>
 
-			<md-list-item>
-				<md-icon>send</md-icon>
-				<span class="md-list-item-text">Sent Mail</span>
-			</md-list-item>
+			<router-link @click.native="$emit('update:active',false);" :to="{name: 'Settings'}">
+				<md-list-item>
+						<md-icon>settings</md-icon>
+						<span class="md-list-item-text">Settings</span>
+				</md-list-item>
+			</router-link>
 
-			<md-list-item>
-				<md-icon>delete</md-icon>
-				<span class="md-list-item-text">Trash</span>
-			</md-list-item>
+			<router-link @click.native="$emit('update:active',false);" :to="{name: 'Faders'}">
+				<md-list-item>
+						<md-icon>settings_remote</md-icon>
+						<span class="md-list-item-text">Faders</span>
+				</md-list-item>
+			</router-link>
 
-			<md-list-item>
-				<md-icon>error</md-icon>
-				<span class="md-list-item-text">Spam</span>
-			</md-list-item>
+			<router-link @click.native="$emit('update:active',false);" :to="{name: 'FX'}">
+				<md-list-item>
+						<md-icon>play_circle_filled</md-icon>
+						<span class="md-list-item-text">FX</span>
+				</md-list-item>
+			</router-link>
 		</md-list>
 	</md-drawer>
 </template>
