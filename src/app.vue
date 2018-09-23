@@ -11,15 +11,16 @@
 </template>
 
 <script lang="ts">
-
-let {ipcRenderer} = require("electron");
-let Router = require("vue-router");
+import Vue from './wrapper/vue';
+import {VueConstructor} from 'vue';
+import {ipcRenderer} from 'electron';
+import VueRouter from './wrapper/vue-router';
 
 let home = require('./pages/home');
 let fx = require('./pages/fx');
 let faders = require('./pages/faders');
 
-let router:Router = new Router({
+let router = new VueRouter({
 	routes: [
 		{
 			path: "./",
@@ -39,7 +40,7 @@ let router:Router = new Router({
 	]
 });
 
-export default {
+export default Vue.extend({
 	components: {
 		titlebar: require('./components/header.vue'),
 		navlist: require('./components/navlist.vue')
@@ -53,7 +54,7 @@ export default {
 	mounted() {
 		ipcRenderer.send("done");
 	}
-}
+});
 </script>
 
 <style lang="scss">
