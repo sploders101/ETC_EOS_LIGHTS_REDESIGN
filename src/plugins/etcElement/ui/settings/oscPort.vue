@@ -1,0 +1,73 @@
+<template>
+    <md-card md-with-hover>
+			<md-card-header>
+				OSCPort Settings
+			</md-card-header>
+			<md-card-content>
+				<md-field>
+					<label>Interface IP (find for autoconfig)</label>
+					<md-input :disabled="!status.receivedSettings" v-model="osc.port.localAddress"></md-input>
+				</md-field>
+				<md-field>
+					<label>Local Port</label>
+					<md-input :disabled="!status.receivedSettings" v-model="osc.port.localPort"></md-input>
+				</md-field>
+				<md-field>
+					<label>Remote Address</label>
+					<md-input :disabled="!status.receivedSettings" v-model="osc.port.remoteAddress"></md-input>
+				</md-field>
+				<md-field>
+					<label>Remote Port</label>
+					<md-input :disabled="!status.receivedSettings" v-model="osc.port.remotePort"></md-input>
+				</md-field>
+				<md-field>
+					<label>Faders to sync</label>
+					<md-input :disabled="!status.receivedSettings" v-model="osc.faders"></md-input>
+				</md-field>
+				<md-button @click="submit" class="md-raised md-primary right">Save</md-button>
+			</md-card-content>
+		</md-card>
+</template>
+
+<script lang="ts">
+	import Vue from '../../../../ui/wrapper/vue';
+	import {VueConstructor} from 'vue';
+	import {oscCfg} from '../../typings/interfaces';
+	import {ipcRenderer} from 'electron';
+
+    export default Vue.extend({
+        data: () => {return {
+            osc: {
+                port: {
+                    localAddress: "",
+                    localPort: 0,
+                    remoteAddress: "",
+                    remotePort: 0
+                },
+                faders: 0
+            } as oscCfg,
+            status: {
+                receivedSettings: false
+            }
+		}},
+		methods: {
+			submit: function() {
+				ipcRenderer.send("/settings/etcElement/update",this.osc);
+			}
+		},
+		mounted: function() {
+			ipcRenderer.on("/settings/etcElement/update",(_:any,settings:oscCfg) => {
+				console.log(settings);
+				this.osc = settings;
+				this.status.receivedSettings = true;
+			});
+			ipcRenderer.send("/settings/etcElement/query");
+		}
+	});
+</script>
+
+<style lang="scss" scoped>
+	.right {
+		// float: right;
+	}
+</style>

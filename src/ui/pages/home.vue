@@ -5,13 +5,14 @@
 </template>
 
 <script lang="ts">
-	export default {
+	import Vue from '../wrapper/vue';
+	export default Vue.extend({
 		data: () => {
 			return {
 				
 			}
 		}
-	}
+	});
 </script>
 
 <style lang="scss">

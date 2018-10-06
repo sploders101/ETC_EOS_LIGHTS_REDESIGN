@@ -1,13 +1,14 @@
 <template lang="html">
 <div class="">
-	faders
+	fx
 </div>
 </template>
 
 <script lang="ts">
-	export default {
+	import Vue from '../wrapper/vue';
+	export default Vue.extend({
 
-	}
+	});
 </script>
 
 <style lang="css">

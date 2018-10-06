@@ -1,5 +1,6 @@
 import { app,BrowserWindow,ipcMain } from 'electron';
 import { enableLiveReload } from 'electron-compile';
+import './plugins/loader';
 // import {WindowState} from './interfaces';
 
 
@@ -67,7 +68,7 @@ function start() {
 	mainWindow.on('maximize', sendWindowState);
 	mainWindow.on('unmaximize', sendWindowState);
 	// and load the index.html of the app.
-	mainWindow.loadURL(`file://${__dirname}/index.html`);
+	mainWindow.loadURL(`file://${__dirname}/ui/index.html`);
 
 	// Emitted when the window is closed.
 	// Typescript error when dereferencing, and the main window should always
