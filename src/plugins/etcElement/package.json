@@ -1,0 +1,13 @@
+{
+  "name": "etcElement",
+  "version": "1.0.0",
+  "description": "Provides etc_eos_element support to thrive_lights_redux",
+  "main": "plugin.ts",
+  "author": "sploders101",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "netmask": "^1.0.6",
+    "osc": "^2.2.4"
+  }
+}
