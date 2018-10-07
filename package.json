@@ -53,6 +53,7 @@
     "esm": "^3.0.84",
     "insert-css": "^2.0.0",
     "material-design-icons": "^3.0.1",
+    "netmask": "^1.0.6",
     "osc": "^2.2.4",
     "tslib": "^1.9.3",
     "vue": "^2.1.7",
