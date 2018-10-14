@@ -7,6 +7,7 @@
 <script lang="ts">
 	import Vue from '../wrapper/vue';
 	import {ipcRenderer} from 'electron';
+	import {VueConstructor} from 'vue';
 
 	let self:any;
 
