@@ -99,6 +99,12 @@ export default function(oscPort: any): boardAPI {
                 address: `/eos/chan/${channel}/param/${param}`,
                 args: value
             });
+        },
+        extras: {
+            close: function () {
+                oscPort.close();
+            },
+            oscPort
         }
     };
 };

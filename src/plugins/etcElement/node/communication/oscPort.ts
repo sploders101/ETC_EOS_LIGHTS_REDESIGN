@@ -31,92 +31,40 @@ function findRoute(ip:string):string {
 }
 
 export default function (oscCfg:oscCfg) {
-    return new Promise(function (resolve) {
-        //Normalize config options
-        const IPMatch = /[^1234567890.]/u;
-        if (oscCfg.port.remoteAddress.match(IPMatch)) {
-            throw new Error("remoteAddress is not correct format. Please fix and try again");
-        }
-        if (oscCfg.port.localAddress === "find") {
-            oscCfg.port.localAddress = findRoute(oscCfg.port.remoteAddress);
-        } else if (oscCfg.port.localAddress.match(IPMatch)) {
-            throw new Error("localAddress is not correct format. Please fix and try again");
-        }
-        if (Number(oscCfg.port.remotePort) != oscCfg.port.remotePort) {
-            throw new Error("remotePort is not correct format. Please fix and try again");
-        }
-        if (Number(oscCfg.port.localPort) != oscCfg.port.localPort) {
-            throw new Error("localPort is not correct format. Please fix and try again");
-        }
+    //Normalize config options
+    const IPMatch = /[^1234567890.]/u;
+    if (oscCfg.port.remoteAddress.match(IPMatch)) {
+        throw new Error("remoteAddress is not correct format. Please fix and try again");
+    }
+    if (oscCfg.port.localAddress === "find") {
+        oscCfg.port.localAddress = findRoute(oscCfg.port.remoteAddress);
+    } else if (oscCfg.port.localAddress.match(IPMatch)) {
+        throw new Error("localAddress is not correct format. Please fix and try again");
+    }
+    if (Number(oscCfg.port.remotePort) != oscCfg.port.remotePort) {
+        throw new Error("remotePort is not correct format. Please fix and try again");
+    }
+    if (Number(oscCfg.port.localPort) != oscCfg.port.localPort) {
+        throw new Error("localPort is not correct format. Please fix and try again");
+    }
 
-        //Open port
-        debug("Creating oscPort");
-        oscPort = new osc.UDPPort(oscCfg.port);
-        //When ready, set up board
-        oscPort.on("ready", function () {
-            // debug("Created oscPort, Configuring light board...");
-            //####################################################################//
-            //####################################################################//
-            //Ping board. If there is no response, then enable TX and ping again. If
-            //there is still no response, throw an error
-            // global.modules.oscHelper.ping("Initialization ping", 500).then(function (responded) {
-            //     if (responded) {
-            //         debug("Board responded!");
-            //         resolve(oscPort);
-            //     } else {
-            //         debug("Input correct TX IP address") //------
-            //         oscPort.send({
-            //             address: "/eos/key/osc_tx_ip_address"
-            //         });
-            //         oscPort.send({
-            //             address: "/eos/key/clear_text"
-            //         });
-            //         for (var i = 0; i < oscCfg.port.localAddress.length; i++) {
-            //             oscPort.send({
-            //                 address: "/eos/key/" + oscCfg.port.localAddress[i]
-            //             });
-            //         }
-            //         oscPort.send({
-            //             address: "/eos/key/enter"
-            //         });
-
-            //         debug("Input correct TX port"); //------
-            //         oscPort.send({
-            //             address: "/eos/key/osc_tx_port_number"
-            //         });
-            //         for (var i = 0; i < String(oscCfg.port.localPort).length; i++) {
-            //             oscPort.send({
-            //                 address: "/eos/key/" + String(oscCfg.port.localPort)[i]
-            //             });
-            //         }
-            //         oscPort.send({
-            //             address: "/eos/key/enter"
-            //         });
-
-            //         //Ping board. If there is no response, then enable TX and ping again. If
-            //         //there is still no response, throw an error
-            //         global.modules.oscHelper.initPing("Initialization ping").then(function (responded) {
-            //             if (responded) {
-            //                 debug("Board responded!");
-                            resolve(oscPort);
-            //             }
-            //         });
-            //     }
-            // });
-        });
-        oscPort.on("error", console.error);
-
-        //Set up event routers
-        oscPort.msgRouter = new EventHandler();
-        oscPort.sendMsg = (obj:any) => {
-            debug.outgoingMsg(obj);
-            oscPort.send(obj);
-        };
-        oscPort.on("message", function (oscMsg:oscMsg) {
-            debug.incomingMsg("Received: " + JSON.stringify(oscMsg));
-            oscPort.msgRouter.emit(oscMsg.address, oscMsg.args);
-        });
-
-        oscPort.open();
+    //Open port
+    debug("Creating oscPort");
+    oscPort = new osc.UDPPort(oscCfg.port);
+    //When ready, set up board
+    oscPort.on("error", console.error);
+    //Set up event routers
+    oscPort.msgRouter = new EventHandler();
+    oscPort.sendMsg = (obj:any) => {
+        debug.outgoingMsg(obj);
+        oscPort.send(obj);
+    };
+    oscPort.on("message", function (oscMsg:oscMsg) {
+        debug.incomingMsg("Received: " + JSON.stringify(oscMsg));
+        oscPort.msgRouter.emit(oscMsg.address, oscMsg.args);
     });
+    
+    oscPort.open();
+
+    return oscPort;
 }

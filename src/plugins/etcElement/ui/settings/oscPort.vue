@@ -57,7 +57,6 @@
 		},
 		mounted: function() {
 			ipcRenderer.on("/settings/etcElement/update",(_:any,settings:oscCfg) => {
-				console.log(settings);
 				this.osc = settings;
 				this.status.receivedSettings = true;
 			});

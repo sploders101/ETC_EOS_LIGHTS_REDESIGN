@@ -13,9 +13,10 @@ import oscPort from './node/communication/oscPort';
 import { oscCfg as oscCfgT } from './typings/osc';
 import fs = require("fs");
 let oscCfgS = fs.readFileSync(__dirname + "/config.json", 'utf-8');
-// console.log(oscCfgS);
 let oscCfg:oscCfgT = JSON.parse(oscCfgS);
-console.log(oscCfg);
+
+import { EventEmitter } from 'events';
+let msg:EventEmitter;
 
 // +-----------------------+
 // |   Plugin Definition   |
@@ -32,6 +33,18 @@ let etcElement: plugin = {
         }
     }
 }
+export {etcElement as board,init};
+
+// +--------------------------------------------------------------+
+// |   Register handlers so other plugins can use our functions   |
+// +--------------------------------------------------------------+
+function init(messager:EventEmitter) {
+    msg = messager;
+    msg.on("/board/command", function (cmd: string, ...args: any[]) {
+        // console.log(cmd)
+        etcElement.includes.node!.board![cmd].apply(null,args);
+    });
+}
 
 // +--------------------------------------------------+
 // |   Events for interaction between plugin and UI   |
@@ -40,23 +53,18 @@ ipcMain.on("/settings/mounted",(event:any) => {
     event.sender.send("/settings/add",etcElement.includes.ui!);
 });
 ipcMain.on("/settings/etcElement/query",(event:any) => {
-    console.log(oscCfg);
     event.sender.send("/settings/etcElement/update",oscCfg);
 });
 ipcMain.on("/settings/etcElement/update",(event:any,oscCfgL:oscCfgT) => {
     oscCfg = oscCfgL
-    // console.log(__dirname + "/config.json", JSON.stringify(oscCfg));
-    etcElement.includes.node!.board = board(oscPort(oscCfg));
     fs.writeFile(__dirname + "/config.json", JSON.stringify(oscCfg),(err: Error) => {
-        // console.log(err);
         event.sender.send("/settings/etcElement/update/saved");
         if(err) {
             event.sender.send("/settings/etcElement/update/error", err);
             console.error(err)
         };
-    })
+    });
+    etcElement.includes.node!.board!.extras.close();
+    etcElement.includes.node!.board = board(oscPort(oscCfg));
+    event.sender.send("/settings/etcElement/update",oscCfg);
 });
-
-export {
-    etcElement
-};

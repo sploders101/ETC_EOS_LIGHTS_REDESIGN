@@ -10,6 +10,7 @@ export interface boardAPI {
     getFaders(numFaders: number, cb: getFadersCallback): void;
     setSubName(sub: number, name: string): void;
     setParam(channel: number, param: string, value: number): void;
+    extras: any;
 }
 
 // Related interfaces
