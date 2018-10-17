@@ -1,4 +1,5 @@
 import {boardAPI} from './board';
+import Vue from 'vue';
 
 export interface plugin {
     enabled: boolean;
@@ -10,4 +11,9 @@ export interface plugin {
             board?: boardAPI // Middleware to use for communication
         }
     }
+}
+
+export interface UICard {
+    path: string;
+    component: Vue;
 }

@@ -50,7 +50,7 @@ function init(messager:EventEmitter) {
 // |   Events for interaction between plugin and UI   |
 // +--------------------------------------------------+
 ipcMain.on("/settings/mounted",(event:any) => {
-    event.sender.send("/settings/add",etcElement.includes.ui!);
+    event.sender.send("/settings/add",etcElement.includes.ui!.settings);
 });
 ipcMain.on("/settings/etcElement/query",(event:any) => {
     event.sender.send("/settings/etcElement/update",oscCfg);

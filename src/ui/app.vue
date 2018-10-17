@@ -23,14 +23,13 @@ import {VueConstructor} from 'vue';
 import {ipcRenderer} from 'electron';
 import VueRouter from './wrapper/vue-router';
 import mdSlider from './components/mdSlider/index.js';
+import {UIEntry} from '../interfaces'
 
 Vue.use(VueRouter);
 Vue.use(VueMaterial);
 Vue.use(mdSlider);
 
 let home = require('./pages/home');
-let fx = require('./pages/fx');
-let faders = require('./pages/faders');
 let settings = require('./pages/settings');
 
 let router = new VueRouter({
@@ -41,21 +40,18 @@ let router = new VueRouter({
 			component: home
 		},
 		{
-			path: "./fx",
-			name: "FX",
-			component: fx
-		},
-		{
-			path: "./faders",
-			name: "Faders",
-			component: faders
-		},
-		{
 			path: "./settings",
 			name: "Settings",
 			component: settings
 		}
 	]
+});
+ipcRenderer.on("/ui/addRoute", function(_:any,uiData:UIEntry) {
+	router.addRoutes([{
+		path: `./${(uiData.link || uiData.name).toLowerCase()}`,
+		name: uiData.link || uiData.link,
+		component: require(uiData.componentPath)
+	}]);
 });
 
 export default Vue.extend({
@@ -70,7 +66,7 @@ export default Vue.extend({
 	},
 	router: router,
 	mounted() {
-		ipcRenderer.send("done");
+		ipcRenderer.send("/ui/mounted");
 	}
 });
 </script>

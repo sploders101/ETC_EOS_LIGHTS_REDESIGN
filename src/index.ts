@@ -39,7 +39,7 @@ function start() {
 		mainWindow.setFullScreen(false);
 		mainWindow.maximize();
 	}
-	ipcMain.once('done', function() {
+	ipcMain.once('/ui/mounted', function() {
 		mainWindow.show();
 		mainWindow.setFullScreen(false);
 		mainWindow.maximize();

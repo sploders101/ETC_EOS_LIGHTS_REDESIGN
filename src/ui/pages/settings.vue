@@ -8,24 +8,21 @@
 	import Vue from '../wrapper/vue';
 	import {ipcRenderer} from 'electron';
 	import {VueConstructor} from 'vue';
-
-	let self:any;
-
-	ipcRenderer.on("/settings/add",(_:any,path:any) => {
-		self.settings.push({
-			path: path.settings,
-			component: require(path.settings)
-		});
-	})
+	import {UICard} from '../../interfaces';
 
 	export default Vue.extend({
 		data: () => {
 			return {
-				settings: []
+				settings: [] as UICard[]
 			}
 		},
 		mounted: function() {
-			self = this;
+			ipcRenderer.on("/settings/add",(_:any,path:string) => {
+				this.settings.push({
+					path: path,
+					component: require(path)
+				});
+			});
 			ipcRenderer.send("/settings/mounted");
 		}
 	});
