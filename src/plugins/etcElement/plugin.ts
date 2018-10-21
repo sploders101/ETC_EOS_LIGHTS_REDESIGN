@@ -45,7 +45,7 @@ export default function init(msg:ipcEmitter) {
     msg.on("/settings/etcElement/query",() => {
         msg.send("/settings/etcElement/update",oscCfg);
     });
-    msg.on("/settings/etcElement/update/save",(_:any,oscCfgL:oscCfgT) => {
+    msg.on("/settings/etcElement/update/save",(oscCfgL:oscCfgT) => {
         oscCfg = oscCfgL
         fs.writeFile(__dirname + "/config.json", JSON.stringify(oscCfg),(err: Error) => {
             msg.send("/settings/etcElement/update/saved");

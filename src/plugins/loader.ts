@@ -31,15 +31,8 @@ import { ipcEmitter } from './typings/plugin';
 // |   Setup Events   |
 // +------------------+
 let oldEmit = ipcMain.emit;
-ipcMain.emit = function(channel:string,...msgs:any) {
-    
+ipcMain.emit = function(channel:string,event:any,...msgs:any) {
     messager.emit.apply(messager,[channel].concat(msgs));
-    return oldEmit.apply(this,[channel].concat(msgs));
+    return oldEmit.apply(this,[channel,event].concat(msgs));
 }
 
-// Allow renderer to run communication commands
-ipcMain.on("/board/command",function(_:any,command:string,...args:any[]) {
-    messager.emit.apply(messager,["/board/command",command].concat(args));
-    console.log(["/board/command", command].concat(args));
-    // messager.emit("/board/command","sendSub",1,1);
-});
