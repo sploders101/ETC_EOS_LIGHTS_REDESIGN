@@ -7,7 +7,6 @@
 // +-------------+
 // |   Imports   |
 // +-------------+
-import { ipcMain } from 'electron';
 import board from './node/communication/etc_eos_element';
 import oscPort from './node/communication/oscPort';
 import { oscCfg as oscCfgT } from './typings/osc';
@@ -15,56 +14,48 @@ import fs = require("fs");
 let oscCfgS = fs.readFileSync(__dirname + "/config.json", 'utf-8');
 let oscCfg:oscCfgT = JSON.parse(oscCfgS);
 
-import { EventEmitter } from 'events';
-let msg:EventEmitter;
-
 // +-----------------------+
 // |   Plugin Definition   |
 // +-----------------------+
-import { plugin } from '../../interfaces';
-let etcElement: plugin = {
-    enabled: true,
-    includes: {
-        ui: {
-            settings: `${__dirname}/ui/settings/oscPort`
-        },
-        node: {
-            board: board(oscPort(oscCfg)),
-        }
-    }
-}
-export {etcElement as board,init};
+import { boardAPI } from '../typings/board';
+import { ipcEmitter } from '../typings/plugin';
+let etcElement:boardAPI = board(oscPort(oscCfg))
 
 // +--------------------------------------------------------------+
 // |   Register handlers so other plugins can use our functions   |
 // +--------------------------------------------------------------+
-function init(messager:EventEmitter) {
-    msg = messager;
+export default function init(msg:ipcEmitter) {
     msg.on("/board/command", function (cmd: string, ...args: any[]) {
-        // console.log(cmd)
-        etcElement.includes.node!.board![cmd].apply(null,args);
+        etcElement[cmd].apply(null,args);
+    });
+    
+    // +--------------------------+
+    // |   Inject UI components   |
+    // +--------------------------+
+    msg.on("/settings/mounted",() => {
+        msg.send("/settings/add", `${__dirname}/ui/settings`);
+    });
+    msg.on("/home/mounted",() => {
+        msg.send("/home/add", `${__dirname}/ui/home`);
+    });
+    
+    // +--------------------------------------------------+
+    // |   Events for interaction between plugin and UI   |
+    // +--------------------------------------------------+
+    msg.on("/settings/etcElement/query",() => {
+        msg.send("/settings/etcElement/update",oscCfg);
+    });
+    msg.on("/settings/etcElement/update/save",(_:any,oscCfgL:oscCfgT) => {
+        oscCfg = oscCfgL
+        fs.writeFile(__dirname + "/config.json", JSON.stringify(oscCfg),(err: Error) => {
+            msg.send("/settings/etcElement/update/saved");
+            if(err) {
+                msg.send("/settings/etcElement/update/error", err);
+                console.error(err)
+            };
+        });
+        etcElement.extras.close();
+        etcElement = board(oscPort(oscCfg));
+        msg.send("/settings/etcElement/update",oscCfg);
     });
 }
-
-// +--------------------------------------------------+
-// |   Events for interaction between plugin and UI   |
-// +--------------------------------------------------+
-ipcMain.on("/settings/mounted",(event:any) => {
-    event.sender.send("/settings/add",etcElement.includes.ui!.settings);
-});
-ipcMain.on("/settings/etcElement/query",(event:any) => {
-    event.sender.send("/settings/etcElement/update",oscCfg);
-});
-ipcMain.on("/settings/etcElement/update",(event:any,oscCfgL:oscCfgT) => {
-    oscCfg = oscCfgL
-    fs.writeFile(__dirname + "/config.json", JSON.stringify(oscCfg),(err: Error) => {
-        event.sender.send("/settings/etcElement/update/saved");
-        if(err) {
-            event.sender.send("/settings/etcElement/update/error", err);
-            console.error(err)
-        };
-    });
-    etcElement.includes.node!.board!.extras.close();
-    etcElement.includes.node!.board = board(oscPort(oscCfg));
-    event.sender.send("/settings/etcElement/update",oscCfg);
-});

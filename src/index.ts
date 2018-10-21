@@ -1,6 +1,6 @@
 import { app,BrowserWindow,ipcMain } from 'electron';
 import { enableLiveReload } from 'electron-compile';
-import './plugins/loader';
+import {init} from './plugins/loader';
 // import {WindowState} from './interfaces';
 
 
@@ -33,6 +33,7 @@ function start() {
 		frame: false,
 		// transparent: true
 	});
+	init(mainWindow);
 
 	if(isDevMode) {
 		mainWindow.show();

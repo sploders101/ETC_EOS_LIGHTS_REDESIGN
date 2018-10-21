@@ -22,17 +22,17 @@
 				</md-field>
 				<md-field>
 					<label>Faders to sync</label>
-					<md-input :disabled="!status.receivedSettings" v-model="osc.faders"></md-input>
+					<md-input :disabled="!status.receivedSettings" v-model.number="osc.faders"></md-input>
 				</md-field>
-				<md-button @click="submit" class="md-raised md-primary right">Save</md-button>
+				<md-button @click="submit" class="md-raised md-primary">Save</md-button>
 			</md-card-content>
 		</md-card>
 </template>
 
 <script lang="ts">
-	import Vue from '../../../../ui/wrapper/vue';
+	import Vue from '../../../ui/wrapper/vue';
 	import {VueConstructor} from 'vue';
-	import {oscCfg} from '../../typings/interfaces';
+	import {oscCfg} from '../typings/interfaces';
 	import {ipcRenderer} from 'electron';
 
     export default Vue.extend({
@@ -52,7 +52,7 @@
 		}},
 		methods: {
 			submit: function() {
-				ipcRenderer.send("/settings/etcElement/update",this.osc);
+				ipcRenderer.send("/settings/etcElement/update/save",this.osc);
 			}
 		},
 		mounted: function() {
@@ -66,7 +66,5 @@
 </script>
 
 <style lang="scss" scoped>
-	.right {
-		// float: right;
-	}
+	
 </style>

@@ -35,12 +35,12 @@ let settings = require('./pages/settings');
 let router = new VueRouter({
 	routes: [
 		{
-			path: "./",
+			path: "",
 			name: "Home",
 			component: home
 		},
 		{
-			path: "./settings",
+			path: "settings",
 			name: "Settings",
 			component: settings
 		}

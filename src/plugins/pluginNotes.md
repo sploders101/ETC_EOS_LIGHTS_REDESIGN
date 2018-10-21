@@ -1,3 +1,11 @@
+# Initialization
+```typescript
+export default function init(msg) {
+    // Plugin code...
+    // msg extends EventEmitter; adds msg.send(channel:string,...args:any) which also communicates with the renderer process
+}
+```
+
 # Messages
 
 ## /ui/addRoute
@@ -11,8 +19,8 @@ export interface UIEntry {
 }
 // @@@ END
 
-ipcMain.on("/ui/mounted",(event:any) => {
-    event.sender.send("/ui/addRoute",{
+msg.on("/ui/mounted",() => {
+    msg.send("/ui/addRoute",{
         ...
     } as UIEntry);
 });
@@ -20,14 +28,14 @@ ipcMain.on("/ui/mounted",(event:any) => {
 
 ## /home/add
 ```typescript
-ipcMain.on("/home/mounted",(event:any) => {
-    event.sender.send("/home/add","/path/to/component.vue");
+msg.on("/home/mounted",() => {
+    msg.send("/home/add","/path/to/component");
 });
 ```
 
 ## /settings/add
 ```typescript
-ipcMain.on("/settings/mounted",(event:any) => {
-    event.sender.send("/settings/add","/path/to/component.vue");
+msg.on("/settings/mounted",() => {
+    msg.send("/settings/add","/path/to/component");
 });
 ```
