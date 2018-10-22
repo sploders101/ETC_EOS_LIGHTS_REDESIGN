@@ -1,0 +1,13 @@
+{
+  "name": "fx",
+  "version": "1.0.0",
+  "main": "plugin.ts",
+  "license": "MIT",
+  "description": "Provides an FX engine to ETC_EOS_Lights_Redux",
+  "author": "Shaun Keys",
+  "private": true,
+  "dependencies": {
+    "@types/animejs": "^2.0.0",
+    "animejs": "https://github.com/sploders101/anime"
+  }
+}

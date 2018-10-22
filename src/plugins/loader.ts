@@ -20,6 +20,8 @@ let messager:ipcEmitter = new Messager();
 // +--------------------+
 import etcElement from "./etcElement/plugin"; // Communication controller
 etcElement(messager);
+import fx from "./fx/plugin"; // Effect controller
+fx(messager);
 
 // +------------------------------------------+
 // |   Imports for helping plugins interact   |
@@ -35,4 +37,3 @@ ipcMain.emit = function(channel:string,event:any,...msgs:any) {
     messager.emit.apply(messager,[channel].concat(msgs));
     return oldEmit.apply(this,[channel,event].concat(msgs));
 }
-
