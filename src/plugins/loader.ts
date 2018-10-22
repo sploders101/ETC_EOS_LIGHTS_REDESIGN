@@ -8,9 +8,9 @@ export function init(mw:BrowserWindow) {
 // +---------------------+
 import Emitter = require("events");
 class Messager extends Emitter {
-    send(channel:string,msg:any) {
-        this.emit(channel,msg);
-        mainWindow.webContents.send(channel,msg);
+    send(channel:string,...msg:any) {
+        this.emit(channel,...msg);
+        mainWindow.webContents.send(channel,...msg);
     }
 };
 let messager:ipcEmitter = new Messager();

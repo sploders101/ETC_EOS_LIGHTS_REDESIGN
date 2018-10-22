@@ -7,5 +7,5 @@ export interface UICard {
 }
 
 export class ipcEmitter extends EventEmitter {
-    send(channel: string, message?: any): void;
+    send(channel: string, ...message: any): void;
 }
