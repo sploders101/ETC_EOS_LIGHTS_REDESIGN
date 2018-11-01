@@ -9,28 +9,54 @@ interface timelineDescriptor {
     common: anime.AnimeAnimParams;
     objects: anime.AnimeParams[];
 }
+interface SubKey {
+    key: string;
+    sub: number;
+}
 
 let timelines = new Map();
 
 export default function init(msg:ipcEmitter) {
     msg.on("/anime/timeline/new", function(desc:timelineDescriptor) {
-        console.log(desc);
+
+        // Create an array of mappings to link anime with submasters
+        let keys:SubKey[];
+        if (desc.linkToSubs) {
+            keys = Object.keys(desc.common.targets as any).map((v,i) => {
+                const match = /^sub([0-9]+)$/g.exec(v);
+                if(match) {
+                    return {
+                        key: v,
+                        sub: Number(match[1])
+                    }
+                } else {
+                    return {
+                        key: "null",
+                        sub: -1
+                    };
+                }
+            }).filter((v) => {
+                return (v.sub >= 0);
+            });
+        }
+
+        // Create animation with anime
         let atl = anime.timeline(Object.assign(desc.common,{
             update: function() {
+                // Report new values to anything listening
                 msg.send(`/anime/timeline/event/${desc.name}/update`,desc.common.targets);
-                console.log(desc.common.targets);
-                if(desc.linkToSubs) {
-                    let keys = Object.keys(desc.common.targets as any);
-                    // This could be done better. Try constructing an array of matching props on initialization
-                    for (let i = 0; i < keys.length; i++) {
-                        const element = keys[i];
-                        const match = /^sub([0-9]+)$/g.exec(element);
-                        if(match) msg.emit("/board/command","sendSub",Number(match[1]),desc.common.targets![element]);
-                    }
+                // Send any values that we have mappings for
+                for (let i = 0; i < keys.length; i++) {
+                    const e = keys[i];
+                    msg.emit("/board/command", "mixSub", e.sub, desc.common.targets![e.key], `fx:${desc.name}:set`);
                 }
             },
             begin: function() {
                 msg.send(`/anime/timeline/event/${desc.name}/begin`);
+                for (let i = 0; i < keys.length; i++) {
+                    const e = keys[i];
+                    msg.emit("/board/command", "mixSub", e.sub, -1, `fx:${desc.name}:enable`);
+                }
             },
             complete: function() {
                 msg.send(`/anime/timeline/event/${desc.name}/complete`);
