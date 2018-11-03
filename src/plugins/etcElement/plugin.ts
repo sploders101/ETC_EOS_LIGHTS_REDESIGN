@@ -26,7 +26,7 @@ let etcElement:boardAPI = board(oscPort(oscCfg))
 // +--------------------------------------------------------------+
 export default function init(msg:ipcEmitter) {
     msg.on("/board/command", function (cmd: string, ...args: any[]) {
-        etcElement[cmd].apply(null,args);
+        etcElement[cmd].apply(etcElement,args);
     });
     
     // +--------------------------+

@@ -22,7 +22,7 @@ export default function init(msg:ipcEmitter) {
         // Create an array of mappings to link anime with submasters
         let keys:SubKey[];
         if (desc.linkToSubs) {
-            keys = Object.keys(desc.common.targets as any).map((v,i) => {
+            keys = Object.keys(desc.common.targets as any).map((v) => {
                 const match = /^sub([0-9]+)$/g.exec(v);
                 if(match) {
                     return {
@@ -48,14 +48,14 @@ export default function init(msg:ipcEmitter) {
                 // Send any values that we have mappings for
                 for (let i = 0; i < keys.length; i++) {
                     const e = keys[i];
-                    msg.emit("/board/command", "mixSub", e.sub, desc.common.targets![e.key], `fx:${desc.name}:set`);
+                    msg.emit("/board/command", "mixSub", "set", `fx:${desc.name}`, e.sub, desc.common.targets![e.key]);
                 }
             },
             begin: function() {
                 msg.send(`/anime/timeline/event/${desc.name}/begin`);
                 for (let i = 0; i < keys.length; i++) {
                     const e = keys[i];
-                    msg.emit("/board/command", "mixSub", e.sub, -1, `fx:${desc.name}:enable`);
+                    msg.emit("/board/command", "mixSub", "enable", `fx:${desc.name}`);
                 }
             },
             complete: function() {
@@ -69,19 +69,27 @@ export default function init(msg:ipcEmitter) {
     });
     msg.on("/anime/timeline/play", function(name:string) {
         timelines.get(name).play();
+        msg.emit("/board/command", "mixSub", "enable", `fx:${name}`);
     });
-    msg.on("/anime/timeline/pause",function(name:string) {
+    msg.on("/anime/timeline/pause", function (name: string) {
         timelines.get(name).pause();
+        msg.emit("/board/command", "mixSub", "disable", `fx:${name}`);
+    });
+    msg.on("/anime/timeline/stop", function (name: string) {
+        timelines.get(name).pause();
+        timelines.get(name).seek(0);
+        msg.emit("/board/command", "mixSub", "disable", `fx:${name}`);
     });
     msg.on("/anime/timeline/seek", function(name:string,time:number) {
         timelines.get(name).seek(time);
     });
-    msg.on("/anime/timeline/remove",function(name:string) {
+    msg.on("/anime/timeline/remove", function (name: string) {
         timelines.get(name).pause();
+        msg.emit("/board/command", "mixSub", "remove", `fx:${name}`);
         timelines.delete(name);
     });
     msg.on("/anime/timeline/stopall",function() {
-        timelines.forEach((v,k) => {
+        timelines.forEach((v) => {
             v.pause();
             v.seek(0);
         });
