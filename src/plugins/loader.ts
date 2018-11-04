@@ -10,7 +10,7 @@ export class Messager extends Emitter {
         this.mainWindow = mw;
         let oldEmit = ipcMain.emit;
         // Override ipcMain's emit function to bridge it to the global messager
-        ipcMain.emit = function (channel: string, event: any, ...msgs: any) {
+        ipcMain.emit = (channel: string, event: any, ...msgs: any) => {
             this.emit.apply(this, [channel].concat(msgs));
             return oldEmit.apply(this, [channel, event].concat(msgs));
         }
