@@ -3,12 +3,12 @@ import {boardAPI} from '../../../../interfaces';
 export default function(oscPort: any): boardAPI {
 
     let subMixes = new Map<string, Map<number, number>>();
-    let subBlendModes = new Map<number,string>();
+    // let subBlendModes = new Map<number,string>();
     let subLayers: string[] = [];
 
-    let paramMixes = new Map<string, Map<string, number>>();
-    let paramBlendModes = new Map<string, string>();
-    let paramLayers: string[] = [];
+    // let paramMixes = new Map<string, Map<string, number>>();
+    // let paramBlendModes = new Map<string, string>();
+    // let paramLayers: string[] = [];
 
     return {
         ping: function (text, timeout) {
