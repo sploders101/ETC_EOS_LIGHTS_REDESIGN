@@ -80,7 +80,6 @@ export default function(oscPort: any): boardAPI {
             });
         },
         sendSub: function (sub, val) {
-            console.log(`${sub}: ${val}`);
             oscPort.sendMsg({
                 address: `/eos/sub/${sub}`,
                 args: val

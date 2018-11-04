@@ -1,7 +1,13 @@
 let e = require("electron");
+
+window.addEventListener("keydown", (event) => {
+	if (event.code == "KeyF") e.ipcRenderer.send("/fx/click/main/tap");
+});
+
 e.ipcRenderer.send("/anime/timeline/new", {
 	name: "test2",
 	linkToSubs: true,
+	linkEngine: true,
 	common: {
 		targets: {
 			sub56: 0,
@@ -10,7 +16,7 @@ e.ipcRenderer.send("/anime/timeline/new", {
 			sub60: 1
 		},
 		easing: 'easeInOutQuint',
-		duration: 900,
+		duration: 1,
 		loop: true
 	},
 	objects: [

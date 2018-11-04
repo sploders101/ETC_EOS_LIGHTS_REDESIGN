@@ -7,6 +7,5 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "tap-tempo": "^0.1.1"
   }
 }
