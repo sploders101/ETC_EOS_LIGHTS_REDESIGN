@@ -134,8 +134,8 @@ export default function(oscPort: any): boardAPI {
                     // this.updateLayerMix(identifier);
                     break;
                 case "disable":
+                    this.updateLayerMix(identifier);
                     subLayers.splice(subLayers.indexOf(identifier), 1);
-                    // this.updateLayerMix(identifier);
                     break;
                 case "remove":
                     subLayers.splice(subLayers.indexOf(identifier), 1);

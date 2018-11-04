@@ -1,5 +1,6 @@
 import anime = require("animejs");
 import {Messager} from '../loader';
+import { fxDescriptor } from '../fxUI/ui/typings';
 
 // interfaces
 interface timelineDescriptor {
@@ -7,6 +8,7 @@ interface timelineDescriptor {
     name: string;
     linkToSubs: boolean;
     linkEngine: boolean;
+    show: boolean;
     common: anime.AnimeAnimParams;
     objects: anime.AnimeParams[];
 }
@@ -19,6 +21,8 @@ let timelines = new Map<string, anime.AnimeTimelineInstance>();
 
 export default function init(msg:Messager) {
     msg.on("/anime/timeline/new", function(desc:timelineDescriptor) {
+
+        let enabled:boolean = false;
 
         // Create an array of mappings to link anime with submasters
         let keys:SubKey[];
@@ -39,6 +43,19 @@ export default function init(msg:Messager) {
             }).filter((v) => {
                 return (v.sub >= 0);
             });
+        }
+
+        // Add hooks to announce our existance to the UI
+        if(desc.show) {
+            let register = function() {
+                msg.send("/fxui/register", {
+                    displayName: desc.name,
+                    fxName: desc.name,
+                    state: enabled
+                } as fxDescriptor);
+            };
+            msg.on("/fxui/mounted", register);
+            register();
         }
         
         // Create animation with anime
@@ -74,6 +91,7 @@ export default function init(msg:Messager) {
         
         // Register event listeners
         msg.on(`/anime/${desc.name}/play`, function () {
+            enabled = true;
             if (desc.linkEngine) { // If this effect is controlled by fxEngine...
                 msg.emit(`/fx/${desc.name}/play`); // Tell effect engine to play
             } else {
@@ -82,6 +100,7 @@ export default function init(msg:Messager) {
             msg.emit("/board/command", "mixSub", "enable", `fx:${desc.name}`);
         });
         msg.on(`/anime/${desc.name}/pause`, function () {
+            enabled = false;
             if (desc.linkEngine) { // If this effect is controlled by fxEngine...
                 msg.emit(`/fx/${desc.name}/pause`); // Tell effect engine to pause
             } else {
@@ -90,6 +109,7 @@ export default function init(msg:Messager) {
             // msg.emit("/board/command", "mixSub", "disable", `fx:${desc.name}`);
         });
         msg.on(`/anime/${desc.name}/stop`, function () {
+            enabled = false;
             if (desc.linkEngine) {
                 msg.emit(`/fx/${desc.name}/stop`);
             } else {

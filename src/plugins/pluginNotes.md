@@ -1,6 +1,8 @@
 # Initialization
 ```typescript
-export default function init(msg) {
+import { Messager } from '../loader';
+
+export default function init(msg:Messager) {
     // Plugin code...
     // msg extends EventEmitter; adds msg.send(channel:string,...args:any) which also communicates with the renderer process
 }
