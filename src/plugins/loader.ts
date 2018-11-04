@@ -1,41 +1,36 @@
-let mainWindow:BrowserWindow;
-export function init(mw:BrowserWindow) {
-    mainWindow = mw;
-}
-
 // +---------------------+
 // |   Create messager   |
 // +---------------------+
 import Emitter = require("events");
-class Messager extends Emitter {
+import {ipcMain, BrowserWindow} from 'electron';
+export class Messager extends Emitter {
+    mainWindow:BrowserWindow;
+    constructor(mw:BrowserWindow) {
+        super();
+        this.mainWindow = mw;
+        let oldEmit = ipcMain.emit;
+        // Override ipcMain's emit function to bridge it to the global messager
+        ipcMain.emit = function (channel: string, event: any, ...msgs: any) {
+            this.emit.apply(this, [channel].concat(msgs));
+            return oldEmit.apply(this, [channel, event].concat(msgs));
+        }
+    }
     send(channel:string,...msg:any) {
         this.emit(channel,...msg);
-        mainWindow.webContents.send(channel,...msg);
+        this.mainWindow.webContents.send(channel,...msg);
     }
 };
-let messager:ipcEmitter = new Messager();
 
 // +--------------------+
 // |   Import plugins   |
 // +--------------------+
 import etcElement from "./etcElement/plugin"; // Communication controller
-etcElement(messager);
 import fx from "./fx/plugin"; // Effect controller
-fx(messager);
 import fxE from "./fxEngine/plugin"; // Effect engine (timing)
-fxE(messager);
 
-// +------------------------------------------+
-// |   Imports for helping plugins interact   |
-// +------------------------------------------+
-import {ipcMain, BrowserWindow} from 'electron';
-import { ipcEmitter } from './typings/plugin';
-
-// +------------------+
-// |   Setup Events   |
-// +------------------+
-let oldEmit = ipcMain.emit;
-ipcMain.emit = function(channel:string,event:any,...msgs:any) {
-    messager.emit.apply(messager,[channel].concat(msgs));
-    return oldEmit.apply(this,[channel,event].concat(msgs));
+export function init(mw:BrowserWindow) {
+    let messager = new Messager(mw);
+    etcElement(messager);
+    fx(messager);
+    fxE(messager);
 }

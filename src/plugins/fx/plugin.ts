@@ -1,5 +1,5 @@
 import anime = require("animejs");
-import {ipcEmitter} from '../typings/plugin';
+import {Messager} from '../loader';
 
 // interfaces
 interface timelineDescriptor {
@@ -17,7 +17,7 @@ interface SubKey {
 
 let timelines = new Map<string, anime.AnimeTimelineInstance>();
 
-export default function init(msg:ipcEmitter) {
+export default function init(msg:Messager) {
     msg.on("/anime/timeline/new", function(desc:timelineDescriptor) {
 
         // Create an array of mappings to link anime with submasters
@@ -96,6 +96,10 @@ export default function init(msg:ipcEmitter) {
                 atl.pause();
             }
             atl.seek(0);
+            // Reset all submaster values
+            keys.forEach((sub) => {
+                msg.emit("/board/command", "mixSub", "set", `fx:${desc.name}`, sub.sub, 0);
+            });
             // Let other effects have control
             msg.emit("/board/command", "mixSub", "disable", `fx:${desc.name}`);
         });
@@ -132,4 +136,3 @@ export default function init(msg:ipcEmitter) {
         });
     });
 }
-

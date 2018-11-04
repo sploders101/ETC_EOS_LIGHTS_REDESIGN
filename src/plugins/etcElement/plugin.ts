@@ -18,13 +18,13 @@ let oscCfg:oscCfgT = JSON.parse(oscCfgS);
 // |   Plugin Definition   |
 // +-----------------------+
 import { boardAPI } from '../typings/board';
-import { ipcEmitter } from '../typings/plugin';
-let etcElement:boardAPI = board(oscPort(oscCfg))
+import { Messager } from '../loader';
 
 // +--------------------------------------------------------------+
 // |   Register handlers so other plugins can use our functions   |
 // +--------------------------------------------------------------+
-export default function init(msg:ipcEmitter) {
+export default function init(msg:Messager) {
+    let etcElement:boardAPI = board(oscPort(oscCfg,msg));
     msg.on("/board/command", function (cmd: string, ...args: any[]) {
         etcElement[cmd].apply(etcElement,args);
     });
@@ -55,7 +55,7 @@ export default function init(msg:ipcEmitter) {
             };
         });
         etcElement.extras.close();
-        etcElement = board(oscPort(oscCfg));
+        etcElement = board(oscPort(oscCfg,msg));
         msg.send("/settings/etcElement/update",oscCfg);
     });
 }

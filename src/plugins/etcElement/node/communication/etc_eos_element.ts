@@ -9,8 +9,8 @@ export default function(oscPort: any): boardAPI {
     // let paramMixes = new Map<string, Map<string, number>>();
     // let paramBlendModes = new Map<string, string>();
     // let paramLayers: string[] = [];
-
-    return {
+    
+    let api = {
         ping: function (text, timeout) {
             return new Promise(function (resolve) {
 
@@ -119,32 +119,32 @@ export default function(oscPort: any): boardAPI {
             this.sendSub(sub, channel);
         },
         updateLayerMix: function (layer) {
-            subMixes.get(layer)!.forEach((_,sub) => {
+            subMixes.get(layer)!.forEach((_, sub) => {
                 this.updateSubMix(sub);
             });
         },
         mixSub: function (command, identifier, submaster, val) {
             if (!subMixes.has(identifier)) subMixes.set(identifier, new Map<number, number>());
-            switch(command) {
+            switch (command) {
                 case "enable":
-                    if(subLayers.indexOf(identifier) >= 0) {
-                        subLayers.splice(subLayers.indexOf(identifier),1);
+                    if (subLayers.indexOf(identifier) >= 0) {
+                        subLayers.splice(subLayers.indexOf(identifier), 1);
                     }
                     subLayers.push(identifier);
-                    this.updateLayerMix(identifier);
+                    // this.updateLayerMix(identifier);
                     break;
                 case "disable":
                     subLayers.splice(subLayers.indexOf(identifier), 1);
-                    this.updateLayerMix(identifier);
+                    // this.updateLayerMix(identifier);
                     break;
                 case "remove":
                     subLayers.splice(subLayers.indexOf(identifier), 1);
-                    this.updateLayerMix(identifier);
+                    // this.updateLayerMix(identifier);
                     subMixes.delete(identifier);
                     break;
                 case "set":
-                    subMixes.get(identifier)!.set(submaster!,val!);
-                    this.updateSubMix(submaster!);
+                    subMixes.get(identifier)!.set(submaster!, val!);
+                    // this.updateSubMix(submaster!);
                     break;
             }
         },
@@ -154,5 +154,20 @@ export default function(oscPort: any): boardAPI {
             },
             oscPort
         }
-    };
+    } as boardAPI;
+
+    // Create our own communication loop (prevents network flooding)
+    setInterval(() => {
+        let activeSubs = new Array();
+        subLayers.forEach((layerName) => {
+            subMixes.get(layerName)!.forEach((_,sub) => {
+                if(activeSubs.indexOf(sub)<0) activeSubs.push(sub);
+            });
+        });
+        activeSubs.forEach((sub) => {
+            api.updateSubMix(sub);
+        })
+    },1);
+
+    return api;
 };

@@ -7,6 +7,7 @@ var netmask = require("netmask").Netmask;
 var EventEmitter = require("events");
 class EventHandler extends EventEmitter { }
 import {oscCfg,oscMsg} from '../../typings/interfaces';
+import { Messager } from '../../../loader';
 
 let oscPort: any;
 
@@ -30,7 +31,7 @@ function findRoute(ip:string):string {
     return "0.0.0.0";
 }
 
-export default function (oscCfg:oscCfg) {
+export default function (oscCfg:oscCfg, msg:Messager) {
     //Normalize config options
     const IPMatch = /[^1234567890.]/u;
     if (oscCfg.port.remoteAddress.match(IPMatch)) {
@@ -52,7 +53,9 @@ export default function (oscCfg:oscCfg) {
     debug("Creating oscPort");
     oscPort = new osc.UDPPort(oscCfg.port);
     //When ready, set up board
-    oscPort.on("error", console.error);
+    oscPort.on("error", (error:Error) => {
+        msg.send("/osc/error",error);
+    });
     //Set up event routers
     oscPort.msgRouter = new EventHandler();
     oscPort.sendMsg = (obj:any) => {

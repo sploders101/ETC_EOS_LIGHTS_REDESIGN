@@ -1,4 +1,4 @@
-import { ipcEmitter } from '../typings/plugin';
+import { Messager } from '../loader';
 
 interface fxDescriptor {
     interface: string;
@@ -61,7 +61,7 @@ class TapClick extends Array<number> {
 let clicks = new Map<string, TapClick>();
 let rFX = new Map<string, fxDescriptor>();
 
-export default function init(msg:ipcEmitter) {
+export default function init(msg:Messager) {
 
     msg.on("/fx/click/new",function(name:string, beats: number = 4) {
         clicks.set(name,new TapClick(name,beats));
