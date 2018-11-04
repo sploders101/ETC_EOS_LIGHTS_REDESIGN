@@ -26,7 +26,7 @@ let etcElement:boardAPI = board(oscPort(oscCfg))
 // +--------------------------------------------------------------+
 export default function init(msg:ipcEmitter) {
     msg.on("/board/command", function (cmd: string, ...args: any[]) {
-        etcElement[cmd].apply(null,args);
+        etcElement[cmd].apply(etcElement,args);
     });
     
     // +--------------------------+
@@ -47,7 +47,7 @@ export default function init(msg:ipcEmitter) {
     });
     msg.on("/settings/etcElement/update/save",(oscCfgL:oscCfgT) => {
         oscCfg = oscCfgL
-        fs.writeFile(__dirname + "/config.json", JSON.stringify(oscCfg),(err: Error) => {
+        fs.writeFile(__dirname + "/config.json", JSON.stringify(oscCfg, null, 4),(err: Error) => {
             msg.send("/settings/etcElement/update/saved");
             if(err) {
                 msg.send("/settings/etcElement/update/error", err);

@@ -22,6 +22,8 @@ import etcElement from "./etcElement/plugin"; // Communication controller
 etcElement(messager);
 import fx from "./fx/plugin"; // Effect controller
 fx(messager);
+import fxE from "./fxEngine/plugin"; // Effect engine (timing)
+fxE(messager);
 
 // +------------------------------------------+
 // |   Imports for helping plugins interact   |
