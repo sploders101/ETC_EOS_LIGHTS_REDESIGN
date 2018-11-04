@@ -12,7 +12,7 @@ export class Messager extends Emitter {
         // Override ipcMain's emit function to bridge it to the global messager
         ipcMain.emit = (channel: string, event: any, ...msgs: any) => {
             this.emit.apply(this, [channel].concat(msgs));
-            return oldEmit.apply(this, [channel, event].concat(msgs));
+            return oldEmit.apply(ipcMain, [channel, event].concat(msgs));
         }
     }
     send(channel:string,...msg:any) {
