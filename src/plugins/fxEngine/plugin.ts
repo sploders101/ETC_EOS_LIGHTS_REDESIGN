@@ -1,4 +1,5 @@
 import { Messager } from '../loader';
+import { fxUIDescriptor } from '../fxUI/ui/typings';
 
 interface fxDescriptor {
     interface: string;
@@ -65,6 +66,15 @@ export default function init(msg:Messager) {
 
     msg.on("/fx/click/new",function(name:string, beats: number = 4) {
         clicks.set(name,new TapClick(name,beats));
+        let register = function() {
+            msg.send("/fxui/click/register", {
+                displayName: name,
+                name: name,
+                state: false
+            } as fxUIDescriptor);
+        }
+        register();
+        msg.on("/fxui/mounted",register);
         msg.on(`/fx/click/${name}/tap`,() => {
             clicks.get(name)!.tap();
         });
@@ -83,6 +93,7 @@ export default function init(msg:Messager) {
     msg.emit("/fx/click/new","main",4);
     msg.emit("/fx/click/main/setDefault");
 
+    // Allow FX to register themselves
     msg.on("/fx/register", (name: string, duration: number) => {
         // Set event listeners
         msg.on(`/fx/${name}/play`, () => {

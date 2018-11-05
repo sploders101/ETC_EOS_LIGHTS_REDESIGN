@@ -9,7 +9,7 @@
     import { VueConstructor } from 'vue';
 import { ipcRenderer } from 'electron';
     export default Vue.extend({
-        props: ["effect", "enabled"],
+        props: ["effect", "enabled","assign"],
         data: function() {
             return {
 
@@ -20,12 +20,17 @@ import { ipcRenderer } from 'electron';
         },
         methods: {
             toggleEffect: function() {
-                if(this.enabled) {
-                    ipcRenderer.send(`/anime/${this.effect}/stop`);
-                    this.$emit('update:enabled', false);
+                if(this.assign) {
+                    ipcRenderer.send(`/fx/${this.effect}/use`,this.assign);
+                    this.$emit("update:assign",false);
                 } else {
-                    ipcRenderer.send(`/anime/${this.effect}/play`);
-                    this.$emit('update:enabled', true);                    
+                    if(this.enabled) {
+                        ipcRenderer.send(`/anime/${this.effect}/stop`);
+                        this.$emit('update:enabled', false);
+                    } else {
+                        ipcRenderer.send(`/anime/${this.effect}/play`);
+                        this.$emit('update:enabled', true);                    
+                    }
                 }
             }
         }

@@ -1,6 +1,6 @@
 import anime = require("animejs");
 import {Messager} from '../loader';
-import { fxDescriptor } from '../fxUI/ui/typings';
+import { fxUIDescriptor } from '../fxUI/ui/typings';
 
 // interfaces
 interface timelineDescriptor {
@@ -50,9 +50,9 @@ export default function init(msg:Messager) {
             let register = function() {
                 msg.send("/fxui/register", {
                     displayName: desc.name,
-                    fxName: desc.name,
+                    name: desc.name,
                     state: enabled
-                } as fxDescriptor);
+                } as fxUIDescriptor);
             };
             msg.on("/fxui/mounted", register);
             register();

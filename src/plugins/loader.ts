@@ -28,12 +28,13 @@ import etcElement from "./etcElement/plugin"; // Communication controller
 import fx from "./fx/plugin"; // Effect controller
 import fxE from "./fxEngine/plugin"; // Effect engine (timing)
 import fxUI from "./fxUI/plugin"; // Effect UI
+import oldFX from "./oldFX/plugin"; // Old FX from previous lighting software
 
 export function init(mw:BrowserWindow) {
     let messager = new Messager(mw);
-    global.msg = messager;
     etcElement(messager);
     fx(messager);
     fxE(messager);
     fxUI(messager);
+    oldFX(messager);
 }

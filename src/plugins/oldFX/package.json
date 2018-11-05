@@ -1,0 +1,9 @@
+{
+  "name": "oldFX",
+  "version": "1.0.0",
+  "description": "Port of FX from old software",
+  "main": "plugin.ts",
+  "author": "Shaun Keys",
+  "license": "MIT",
+  "private": true
+}

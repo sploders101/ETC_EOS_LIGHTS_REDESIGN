@@ -167,7 +167,7 @@ export default function(oscPort: any): boardAPI {
         activeSubs.forEach((sub) => {
             api.updateSubMix(sub);
         })
-    },1);
+    },10);
 
     return api;
 };
