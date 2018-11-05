@@ -20,6 +20,10 @@ interface SubKey {
 let timelines = new Map<string, anime.AnimeTimelineInstance>();
 
 export default function init(msg:Messager) {
+    msg.on("/home/mounted", () => {
+        msg.send("/home/add", `${__dirname}/ui/home`);
+    });
+
     msg.on("/anime/timeline/new", function(desc:timelineDescriptor) {
 
         let enabled:boolean = false;

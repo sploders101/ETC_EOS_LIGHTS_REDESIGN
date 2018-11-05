@@ -1,6 +1,10 @@
 import { Messager } from '../loader';
 
 export default function init(msg: Messager) {
+    msg.on("/home/mounted", () => {
+        msg.send("/home/add", `${__dirname}/ui/home`);
+    });
+    
     msg.emit("/fx/click/new", "second", 4);
     msg.emit("/fx/click/new", "third", 4);
     msg.emit("/fx/click/new", "fourth", 4);

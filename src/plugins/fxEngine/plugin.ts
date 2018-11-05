@@ -63,6 +63,9 @@ let clicks = new Map<string, TapClick>();
 let rFX = new Map<string, fxDescriptor>();
 
 export default function init(msg:Messager) {
+    msg.on("/home/mounted", () => {
+        msg.send("/home/add", `${__dirname}/ui/home`);
+    });
 
     msg.on("/fx/click/new",function(name:string, beats: number = 4) {
         clicks.set(name,new TapClick(name,beats));

@@ -53,6 +53,8 @@
         grid-template-columns: [fx-start] 80% [clicks-start] 20% [all-end];
         // grid-template-rows: [fx-start] 80% [secondary-clicks-start] 20% [all-end];
         grid-template-rows: [fx-start] 100% [secondary-clicks-start] 0% [all-end];
+        user-select: none;
+        cursor: default;
     }
 
     .effects {

@@ -1,7 +1,7 @@
 <template>
     <md-card md-with-hover>
         <md-card-header>
-            ETC Element OSCPort API
+            TempoKeeper FX Engine
         </md-card-header>
         <md-card-content>
             Plugin is initialized
@@ -12,8 +12,8 @@
         <md-dialog :md-active.sync="showDialog">
             <md-dialog-title>Details</md-dialog-title>
             <p class="dialogContent">
-                This plugin provides connectivity to the EOS family of boards from ETC.
-                It will eventually be phased out in favor of a two-part OSC&lt;-&gt;EOS style plugin configuration, allowing for OSC routing
+                This plugin links with the FX renderer in order to sync effects with a tempo, rather than a pre-defined time.
+                This allows changing the timing of effects on-the-fly, and better suits a live improvized environment.
             </p>
             <md-dialog-actions>
                 <md-button class="md-primary" @click="showDialog = false;">OK</md-button>
