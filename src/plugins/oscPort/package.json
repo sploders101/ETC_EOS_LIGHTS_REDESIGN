@@ -1,0 +1,12 @@
+{
+  "name": "oscport",
+  "version": "1.0.0",
+  "description": "Adds OSC routing to ETC_EOS_LIGHTS_REDUX",
+  "main": "plugin.ts",
+  "author": "Shaun Keys",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "osc": "^2.2.4"
+  }
+}

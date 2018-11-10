@@ -25,6 +25,7 @@ export class Messager extends Emitter {
 // |   Import plugins   |
 // +--------------------+
 import configManager from "./configManager/plugin"; // Configuration manager
+import oscPort from "./oscPort/plugin";
 import etcElement from "./etcElement/plugin"; // Communication controller
 import mixer from "./mixer/plugin"; // Mixer plugin to prevent strobing from conflicting fx
 import fx from "./fx/plugin"; // Effect controller
@@ -35,6 +36,7 @@ import oldFX from "./oldFX/plugin"; // Old FX from previous lighting software
 export function init(mw:BrowserWindow) {
     let msg = new Messager(mw);
     configManager(msg);
+    oscPort(msg);
     etcElement(msg);
     mixer(msg);
     fx(msg);

@@ -1,6 +1,7 @@
-import {boardAPI} from '../../../../interfaces';
+import {boardAPI} from '../../interfaces';
+import {oscPortWrapper} from './plugin';
 
-export default function(oscPort: any): boardAPI {
+export default function(oscPort: oscPortWrapper): boardAPI {
     
     return {
         ping: function (text, timeout) {
@@ -24,43 +25,6 @@ export default function(oscPort: any): boardAPI {
                         if (arg == text) {
                             if (timeout) {
                                 clearInterval(timeout);
-                            }
-                            resolve(true);
-                        } else {
-                            listen();
-                        }
-                    });
-                }
-                listen();
-            });
-        },
-        initPing: function (text, timeout) {
-            return new Promise(function (resolve) {
-                // resolve(true);
-                if (!timeout) {
-                    timeout = 500
-                }
-
-                if (typeof (text) != "string") text = "";
-
-                oscPort.sendMsg({
-                    address: "/eos/ping",
-                    args: text
-                });
-
-                let interval = setInterval(function () {
-                    oscPort.sendMsg({
-                        address: "/eos/ping",
-                        args: text
-                    });
-                }, timeout);
-
-
-                var listen = function () {
-                    oscPort.msgRouter.once("/eos/out/ping", function (arg: string) {
-                        if (arg == text) {
-                            if (timeout) {
-                                clearInterval(interval);
                             }
                             resolve(true);
                         } else {
@@ -99,12 +63,6 @@ export default function(oscPort: any): boardAPI {
                 address: `/eos/chan/${channel}/param/${param}`,
                 args: value
             });
-        },
-        extras: {
-            close: function () {
-                oscPort.close();
-            },
-            oscPort
         }
     } as boardAPI;
 };

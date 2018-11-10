@@ -1,65 +1,80 @@
-// +---------------------------------------------------------------------+
-// |                                                                     |
-// |          ETC Element Board API (to be used as a reference)          |
-// |                                                                     |
-// +---------------------------------------------------------------------+
 
-// +-------------+
-// |   Imports   |
-// +-------------+
-import board from './node/communication/etc_eos_element';
-import oscPort from './node/communication/oscPort';
-import { oscCfg as oscCfgT } from './typings/osc';
-import fs = require("fs");
-let defaultCfg: oscCfgT = {
-    "faders": 500,
-    "port": {
-        "localAddress": "0.0.0.0",
-        "localPort": 57121,
-        "remoteAddress": "0.0.0.0",
-        "remotePort": 57122
+// ┌───────────────────────────────┐
+// │                               │
+// │      ETC EOS Element API      │
+// │                               │
+// └───────────────────────────────┘
+
+// ┌─────────┐
+// │ Imports │
+// └─────────┘
+import board from './etc_eos_element';
+import { Messager } from '../loader';
+import { oscMsg } from 'osc';
+import { oscDest } from 'oscPlugin';
+import { EventEmitter } from 'events';
+import { ETCConfig } from './typings/config';
+
+let defaultConfig: ETCConfig = {
+    OSCAddress: "0.0.0.0",
+    OSCPort: 57122,
+    OSCFaders: 500
+};
+
+class msgRouter extends EventEmitter {
+    constructor(msg:Messager) {
+        super();
+        msg.on("/oscPort/in", (address: string, args: any) => {
+            this.emit(address,args);
+        });
     }
 }
 
-// +-----------------------+
-// |   Plugin Definition   |
-// +-----------------------+
-import { boardAPI } from '../typings/board';
-import { Messager } from '../loader';
+export class oscPortWrapper {
+    msg: Messager;
+    destination: oscDest;
+    msgRouter: msgRouter;
+    constructor(msg:Messager, destination: oscDest) {
+        this.msg = msg;
+        this.destination = destination;
+        this.msgRouter = new msgRouter(msg);
+    }
+    sendMsg(msg:oscMsg) {
+        this.msg.emit("/oscPort/out",this.destination,msg);
+    }
+}
 
-// +--------------------------------------------------------------+
-// |   Register handlers so other plugins can use our functions   |
-// +--------------------------------------------------------------+
-export default function init(msg:Messager) {
-    let etcElement:boardAPI;
-    msg.once("/config/get/etcElement",(oscCfg:oscCfgT) => {
-        etcElement = board(oscPort(oscCfg, msg));
+export default function init(msg: Messager) {
+    let config:oscDest;
+    function updateConfig(cfg:ETCConfig) {
+        config = {
+            remoteAddress: cfg.OSCAddress,
+            remotePort: cfg.OSCPort
+        }
+    }
+    msg.once("/config/get/etcElement",(cfg:ETCConfig) => {
+        updateConfig(cfg);
+        let oscPort = new oscPortWrapper(msg, config);
+        let element = board(oscPort);
         msg.on("/board/command", function (cmd: string, ...args: any[]) {
-            etcElement[cmd].apply(etcElement, args);
+            element[cmd].apply(element, args);
         });
     });
-    msg.send("/config/get","etcElement", defaultCfg);
-    
-    // +--------------------------+
-    // |   Inject UI components   |
-    // +--------------------------+
-    msg.on("/settings/mounted",() => {
-        msg.send("/settings/add", `${__dirname}/ui/settings`);
-    });
-    msg.on("/home/mounted",() => {
-        msg.send("/home/add", `${__dirname}/ui/home`);
-    });
-    
-    // +--------------------------------------------------+
-    // |   Events for interaction between plugin and UI   |
-    // +--------------------------------------------------+
+    msg.emit("/config/get","etcElement",defaultConfig);
+
     msg.on("/etcElement/getConfig",() => {
-        msg.emit("/config/get","etcElement",defaultCfg);
-    })
-    msg.on("/settings/etcElement/update/save",(oscCfg:oscCfgT) => {
-        msg.emit("/config/set","etcElement",oscCfg);
-        etcElement.extras.close();
-        etcElement = board(oscPort(oscCfg,msg));
-        msg.send("/settings/etcElement/update",oscCfg);
+        msg.emit("/config/get","etcElement",defaultConfig);
+    });
+
+    msg.on("/etcElement/settings/save",(cfg:ETCConfig) => {
+        updateConfig(cfg);
+        msg.send("/config/set","etcElement",cfg);
+    });
+
+    msg.on("/home/mounted", () => {
+        msg.send("/home/add", `${__dirname}/ui/settings`);
+    });
+    msg.on("/settings/mounted", () => {
+        msg.send("/settings/add", `${__dirname}/ui/settings`);
     });
 }
