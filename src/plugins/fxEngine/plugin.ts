@@ -1,4 +1,5 @@
 import { Messager } from '../loader';
+import { fxUIDescriptor } from '../fxUI/ui/typings';
 
 interface fxDescriptor {
     interface: string;
@@ -62,14 +63,27 @@ let clicks = new Map<string, TapClick>();
 let rFX = new Map<string, fxDescriptor>();
 
 export default function init(msg:Messager) {
+    msg.on("/home/mounted", () => {
+        msg.send("/home/add", `${__dirname}/ui/home`);
+    });
 
     msg.on("/fx/click/new",function(name:string, beats: number = 4) {
         clicks.set(name,new TapClick(name,beats));
+        let register = function() {
+            msg.send("/fxui/click/register", {
+                displayName: name,
+                name: name,
+                state: false
+            } as fxUIDescriptor);
+        }
+        register();
+        msg.on("/fxui/mounted",register);
         msg.on(`/fx/click/${name}/tap`,() => {
             clicks.get(name)!.tap();
         });
         msg.on(`/fx/click/${name}/setDefault`, () => {
             clicks.set("default",clicks.get(name)!);
+            msg.send("/fx/click/default", clicks.get("default")!.name);
         });
         msg.on(`/fx/click/${name}/remove`, () => {
             msg.removeAllListeners(`/fx/click/${name}/tap`);
@@ -78,11 +92,18 @@ export default function init(msg:Messager) {
             clicks.delete(name);
         });
     });
+    msg.on("/fxui/mounted",() => {
+        msg.send("/fx/click/default", clicks.get("default")!.name);
+    });
+    msg.on("/fx/click/getDefault", () => {
+        msg.send("/fx/click/default",clicks.get("default")!.name);
+    });
 
     // Initialize a default TapClick
     msg.emit("/fx/click/new","main",4);
     msg.emit("/fx/click/main/setDefault");
 
+    // Allow FX to register themselves
     msg.on("/fx/register", (name: string, duration: number) => {
         // Set event listeners
         msg.on(`/fx/${name}/play`, () => {

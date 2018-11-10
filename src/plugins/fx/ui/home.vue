@@ -1,7 +1,7 @@
 <template>
     <md-card md-with-hover>
         <md-card-header>
-            ETC Element API
+            Anime.js FX Renderer
         </md-card-header>
         <md-card-content>
             Plugin is initialized
@@ -12,8 +12,8 @@
         <md-dialog :md-active.sync="showDialog">
             <md-dialog-title>Details</md-dialog-title>
             <p class="dialogContent">
-                This plugin provides connectivity to the EOS family of boards from ETC.
-                Depends on oscPort plugin for communication.
+                This plugin provides anime.js data rendering for easy effect creation with timelines.
+                Credits to juliangarnier for making anime.js.
             </p>
             <md-dialog-actions>
                 <md-button class="md-primary" @click="showDialog = false;">OK</md-button>

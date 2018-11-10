@@ -1,7 +1,7 @@
 <template>
     <md-card md-with-hover>
         <md-card-header>
-            ETC Element API
+            FX LiveUI
         </md-card-header>
         <md-card-content>
             Plugin is initialized
@@ -12,8 +12,8 @@
         <md-dialog :md-active.sync="showDialog">
             <md-dialog-title>Details</md-dialog-title>
             <p class="dialogContent">
-                This plugin provides connectivity to the EOS family of boards from ETC.
-                Depends on oscPort plugin for communication.
+                This plugin links with "TempoKeeper" and "Anime.js FX Renderer" in order to provide a simple UI for controlling a live production environment.
+                This only adds a UI which acts as a remote for APIs exposed by other plugins
             </p>
             <md-dialog-actions>
                 <md-button class="md-primary" @click="showDialog = false;">OK</md-button>

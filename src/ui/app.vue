@@ -49,15 +49,15 @@ let router = new VueRouter({
 ipcRenderer.on("/ui/addRoute", function(_:any,uiData:UIEntry) {
 	router.addRoutes([{
 		path: `./${(uiData.link || uiData.name).toLowerCase()}`,
-		name: uiData.link || uiData.link,
+		name: uiData.link || uiData.name,
 		component: require(uiData.componentPath)
 	}]);
 });
 
 export default Vue.extend({
 	components: {
-		titlebar: require('./components/header.vue'),
-		navlist: require('./components/navlist.vue')
+		titlebar: require('./components/header'),
+		navlist: require('./components/navlist')
 	},
 	data() {
 		return {

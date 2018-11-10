@@ -1,7 +1,7 @@
 <template>
     <md-card md-with-hover>
         <md-card-header>
-            ETC Element API
+            Old FX port
         </md-card-header>
         <md-card-content>
             Plugin is initialized
@@ -12,8 +12,8 @@
         <md-dialog :md-active.sync="showDialog">
             <md-dialog-title>Details</md-dialog-title>
             <p class="dialogContent">
-                This plugin provides connectivity to the EOS family of boards from ETC.
-                Depends on oscPort plugin for communication.
+                This plugin ports over the effects from sploders101/ETC_EOS_Lights for the time being.
+                These effects will eventually be phased out in favor of a custom effect designer, which will allow you to create your own.
             </p>
             <md-dialog-actions>
                 <md-button class="md-primary" @click="showDialog = false;">OK</md-button>
