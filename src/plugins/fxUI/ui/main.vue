@@ -5,7 +5,7 @@
         </div>
         <div class="clicks">
             <div class="defaultClick" @click="assignDefaultClick()">Default</div>
-            <fx-click v-for="click in clicks" :key="click.name" :click="click.name" :assign.sync="assignMode" :default.sync="click.state">{{ click.displayName }}</fx-click>
+            <fx-click v-for="click in clicks" :key="click.name" :defaultClick="defaultClick" :click="click.name" :assign.sync="assignMode" :default.sync="click.state">{{ click.displayName }}</fx-click>
         </div>
         <div class="secondaryClicks"></div>
     </div>
@@ -25,7 +25,8 @@
             return {
                 effects: [] as fxUIDescriptor[],
                 clicks: [] as fxUIDescriptor[],
-                assignMode: false as boolean | string
+                assignMode: false as boolean | string,
+                defaultClick: "" as string
             }
         },
         methods: {
@@ -40,6 +41,9 @@
             ipcRenderer.on("/fxui/click/register", (_:any, clickD:fxUIDescriptor) => {
                 this.clicks.push(clickD);
             });
+            ipcRenderer.on("/fx/click/default",(_:any, defaultFX:string) => {
+                this.defaultClick = defaultFX;
+            });
             ipcRenderer.send("/fxui/mounted");
         }
     });
@@ -50,7 +54,7 @@
         width: 100%;
         height: 100%;
         display: grid;
-        grid-template-columns: [fx-start] 80% [clicks-start] 20% [all-end];
+        grid-template-columns: [fx-start] calc( 100% - 27em ) [clicks-start] 27em [all-end];
         // grid-template-rows: [fx-start] 80% [secondary-clicks-start] 20% [all-end];
         grid-template-rows: [fx-start] 100% [secondary-clicks-start] 0% [all-end];
         user-select: none;

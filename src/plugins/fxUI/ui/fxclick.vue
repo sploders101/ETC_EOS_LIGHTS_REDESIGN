@@ -1,7 +1,7 @@
 <template>
     <div class="fxClick">
         <div class="assign" @click="assignf()"></div>
-        <div class="label" @click="setDefault()"><slot></slot></div>
+        <div class="label" @click="setDefault()" :class="(defaultClick==click) ? ('green') : ('red')"><slot></slot></div>
         <div class="tap" @click="tap()"></div>
     </div>
 </template>
@@ -11,7 +11,7 @@
     import { VueConstructor } from 'vue';
 import { ipcRenderer } from 'electron';
     export default Vue.extend({
-        props: ["click","assign"],
+        props: ["defaultClick","click","assign"],
         data: function() {
             return {
 
@@ -44,12 +44,17 @@ import { ipcRenderer } from 'electron';
             grid-area: top / assign / bottom / end-assign;
         }
         .label {
-            background-color: #C62828; // red, 800
             grid-area: top / label / bottom / end-label;
             font-size: 2em;
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+        .green {
+            background-color: #2E7D32; // green, 800
+        }
+        .red {
+            background-color: #C62828; // red, 800
         }
         .tap {
             background-color: #616161;

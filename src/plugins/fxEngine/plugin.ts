@@ -83,6 +83,7 @@ export default function init(msg:Messager) {
         });
         msg.on(`/fx/click/${name}/setDefault`, () => {
             clicks.set("default",clicks.get(name)!);
+            msg.send("/fx/click/default", clicks.get("default")!.name);
         });
         msg.on(`/fx/click/${name}/remove`, () => {
             msg.removeAllListeners(`/fx/click/${name}/tap`);
@@ -90,6 +91,12 @@ export default function init(msg:Messager) {
             msg.removeAllListeners(`/fx/click/${name}/remove`);
             clicks.delete(name);
         });
+    });
+    msg.on("/fxui/mounted",() => {
+        msg.send("/fx/click/default", clicks.get("default")!.name);
+    });
+    msg.on("/fx/click/getDefault", () => {
+        msg.send("/fx/click/default",clicks.get("default")!.name);
     });
 
     // Initialize a default TapClick
