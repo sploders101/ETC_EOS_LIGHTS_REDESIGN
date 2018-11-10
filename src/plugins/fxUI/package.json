@@ -1,8 +1,8 @@
 {
-  "name": "fxUI",
+  "name": "fxui",
   "version": "1.0.0",
   "description": "Live UI for fx and fxEngine plugins",
-  "main": "index.ts",
+  "main": "plugin.ts",
   "author": "Shaun Keys",
   "license": "MIT",
   "private": true

@@ -24,14 +24,14 @@ export class Messager extends Emitter {
 // +--------------------+
 // |   Import plugins   |
 // +--------------------+
-import configManager from "./configManager/plugin"; // Configuration manager
-import oscPort from "./oscPort/plugin";
-import etcElement from "./etcElement/plugin"; // Communication controller
-import mixer from "./mixer/plugin"; // Mixer plugin to prevent strobing from conflicting fx
-import fx from "./fx/plugin"; // Effect controller
-import fxE from "./fxEngine/plugin"; // Effect engine (timing)
-import fxUI from "./fxUI/plugin"; // Effect UI
-import oldFX from "./oldFX/plugin"; // Old FX from previous lighting software
+import configManager from "./configManager"; // Configuration manager
+import oscPort from "./oscPort";
+import etcElement from "./etcElement"; // Communication controller
+import mixer from "./mixer"; // Mixer plugin to prevent strobing from conflicting fx
+import fx from "./fx"; // Effect controller
+import fxE from "./fxEngine"; // Effect engine (timing)
+import fxUI from "./fxUI"; // Effect UI
+import oldFX from "./oldFX"; // Old FX from previous lighting software
 
 export function init(mw:BrowserWindow) {
     let msg = new Messager(mw);
