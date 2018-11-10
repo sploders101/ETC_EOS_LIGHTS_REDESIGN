@@ -56,11 +56,11 @@
 			}
 		},
 		mounted: function() {
-			ipcRenderer.on("/settings/etcElement/update",(_:any,settings:oscCfg) => {
+			ipcRenderer.on("/config/get/etcElement",(_:any,settings:oscCfg) => {
 				this.osc = settings;
 				this.status.receivedSettings = true;
 			});
-			ipcRenderer.send("/settings/etcElement/query");
+			ipcRenderer.send("/etcElement/getConfig");
 		}
 	});
 </script>

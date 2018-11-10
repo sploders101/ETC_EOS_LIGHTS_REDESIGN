@@ -24,17 +24,21 @@ export class Messager extends Emitter {
 // +--------------------+
 // |   Import plugins   |
 // +--------------------+
+import configManager from "./configManager/plugin"; // Configuration manager
 import etcElement from "./etcElement/plugin"; // Communication controller
+import mixer from "./mixer/plugin"; // Mixer plugin to prevent strobing from conflicting fx
 import fx from "./fx/plugin"; // Effect controller
 import fxE from "./fxEngine/plugin"; // Effect engine (timing)
 import fxUI from "./fxUI/plugin"; // Effect UI
 import oldFX from "./oldFX/plugin"; // Old FX from previous lighting software
 
 export function init(mw:BrowserWindow) {
-    let messager = new Messager(mw);
-    etcElement(messager);
-    fx(messager);
-    fxE(messager);
-    fxUI(messager);
-    oldFX(messager);
+    let msg = new Messager(mw);
+    configManager(msg);
+    etcElement(msg);
+    mixer(msg);
+    fx(msg);
+    fxE(msg);
+    fxUI(msg);
+    oldFX(msg);
 }

@@ -1,0 +1,9 @@
+{
+  "name": "configmanager",
+  "version": "1.0.0",
+  "description": "Manages persistent configurations for other plugins",
+  "main": "plugin.ts",
+  "author": "Shaun Keys",
+  "license": "MIT",
+  "private": true
+}

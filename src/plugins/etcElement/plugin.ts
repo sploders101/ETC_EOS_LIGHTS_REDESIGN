@@ -11,8 +11,7 @@ import board from './node/communication/etc_eos_element';
 import oscPort from './node/communication/oscPort';
 import { oscCfg as oscCfgT } from './typings/osc';
 import fs = require("fs");
-let oscCfgS = fs.readFileSync(__dirname + "/config.json", 'utf-8');
-let oscCfg:oscCfgT = JSON.parse(oscCfgS);
+let defaultCfg:oscCfgT = require("./config.json");
 
 // +-----------------------+
 // |   Plugin Definition   |
@@ -24,10 +23,14 @@ import { Messager } from '../loader';
 // |   Register handlers so other plugins can use our functions   |
 // +--------------------------------------------------------------+
 export default function init(msg:Messager) {
-    let etcElement:boardAPI = board(oscPort(oscCfg,msg));
-    msg.on("/board/command", function (cmd: string, ...args: any[]) {
-        etcElement[cmd].apply(etcElement,args);
+    let etcElement:boardAPI;
+    msg.once("/config/get/etcElement",(oscCfg:oscCfgT) => {
+        etcElement = board(oscPort(oscCfg, msg));
+        msg.on("/board/command", function (cmd: string, ...args: any[]) {
+            etcElement[cmd].apply(etcElement, args);
+        });
     });
+    msg.send("/config/get","etcElement", defaultCfg);
     
     // +--------------------------+
     // |   Inject UI components   |
@@ -42,18 +45,11 @@ export default function init(msg:Messager) {
     // +--------------------------------------------------+
     // |   Events for interaction between plugin and UI   |
     // +--------------------------------------------------+
-    msg.on("/settings/etcElement/query",() => {
-        msg.send("/settings/etcElement/update",oscCfg);
-    });
-    msg.on("/settings/etcElement/update/save",(oscCfgL:oscCfgT) => {
-        oscCfg = oscCfgL
-        fs.writeFile(__dirname + "/config.json", JSON.stringify(oscCfg, null, 4),(err: Error) => {
-            msg.send("/settings/etcElement/update/saved");
-            if(err) {
-                msg.send("/settings/etcElement/update/error", err);
-                console.error(err)
-            };
-        });
+    msg.on("/etcElement/getConfig",() => {
+        msg.emit("/config/get","etcElement",defaultCfg);
+    })
+    msg.on("/settings/etcElement/update/save",(oscCfg:oscCfgT) => {
+        msg.emit("/config/set","etcElement",oscCfg);
         etcElement.extras.close();
         etcElement = board(oscPort(oscCfg,msg));
         msg.send("/settings/etcElement/update",oscCfg);
