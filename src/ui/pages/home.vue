@@ -28,8 +28,9 @@
 	});
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 	.md-card {
 		margin-top: 16px;
+		display: inline-block;
 	}
 </style>
