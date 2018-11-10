@@ -72,7 +72,7 @@ export default function init(msg: Messager) {
     });
 
     msg.on("/home/mounted", () => {
-        msg.send("/home/add", `${__dirname}/ui/settings`);
+        msg.send("/home/add", `${__dirname}/ui/home`);
     });
     msg.on("/settings/mounted", () => {
         msg.send("/settings/add", `${__dirname}/ui/settings`);
