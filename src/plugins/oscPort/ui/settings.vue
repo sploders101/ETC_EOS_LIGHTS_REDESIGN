@@ -1,20 +1,16 @@
 <template>
     <md-card md-with-hover>
 			<md-card-header>
-				etcElement Settings
+				OSCPort Settings
 			</md-card-header>
 			<md-card-content>
 				<md-field>
-					<label>Remote Address</label>
-					<md-input :disabled="!status.receivedSettings" v-model="config.OSCAddress"></md-input>
+					<label>Interface IP (0.0.0.0 for all)</label>
+					<md-input :disabled="!status.receivedSettings" v-model="config.localAddress"></md-input>
 				</md-field>
 				<md-field>
-					<label>Remote Port</label>
-					<md-input :disabled="!status.receivedSettings" v-model="config.OSCPort"></md-input>
-				</md-field>
-				<md-field>
-					<label>Faders to sync</label>
-					<md-input :disabled="!status.receivedSettings" v-model.number="config.OSCFaders"></md-input>
+					<label>Local Port</label>
+					<md-input :disabled="!status.receivedSettings" v-model="config.localPort"></md-input>
 				</md-field>
 				<md-button @click="submit" :disabled="!status.receivedSettings" class="md-raised md-primary">Save</md-button>
 			</md-card-content>
@@ -25,30 +21,29 @@
 	import Vue from '../../../ui/wrapper/vue';
 	import {VueConstructor} from 'vue';
 	import {ipcRenderer} from 'electron';
-	import {ETCConfig} from '../typings/config';
+	import { oscCfg } from 'osc';
 
     export default Vue.extend({
         data: () => {return {
             config: {
-				OSCAddress: "",
-				OSCPort: 0,
-				OSCFaders: 0
-            } as ETCConfig,
+				localAddress: "",
+				localPort: 0
+            } as oscCfg,
             status: {
                 receivedSettings: false
             }
 		}},
 		methods: {
 			submit: function() {
-				ipcRenderer.send("/etcElement/settings/save",this.config);
+				ipcRenderer.send("/oscPort/settings/save",this.config);
 			}
 		},
 		mounted: function() {
-			ipcRenderer.on("/config/get/etcElement",(_:any,settings:ETCConfig) => {
+			ipcRenderer.on("/config/get/oscPort",(_:any,settings:oscCfg) => {
 				this.config = settings;
 				this.status.receivedSettings = true;
 			});
-			ipcRenderer.send("/etcElement/getConfig");
+			ipcRenderer.send("/oscPort/getConfig");
 		}
 	});
 </script>
