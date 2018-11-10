@@ -1,9 +1,0 @@
-{
-    "faders": 500,
-    "port": {
-        "localAddress": "0.0.0.0",
-        "localPort": 57121,
-        "remoteAddress": "0.0.0.0",
-        "remotePort": 57122
-    }
-}

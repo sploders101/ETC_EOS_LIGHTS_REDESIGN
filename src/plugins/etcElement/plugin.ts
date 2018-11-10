@@ -11,7 +11,15 @@ import board from './node/communication/etc_eos_element';
 import oscPort from './node/communication/oscPort';
 import { oscCfg as oscCfgT } from './typings/osc';
 import fs = require("fs");
-let defaultCfg:oscCfgT = require("./config.json");
+let defaultCfg: oscCfgT = {
+    "faders": 500,
+    "port": {
+        "localAddress": "0.0.0.0",
+        "localPort": 57121,
+        "remoteAddress": "0.0.0.0",
+        "remotePort": 57122
+    }
+}
 
 // +-----------------------+
 // |   Plugin Definition   |
