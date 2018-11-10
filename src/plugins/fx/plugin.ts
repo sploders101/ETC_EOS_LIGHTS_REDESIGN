@@ -70,14 +70,14 @@ export default function init(msg:Messager) {
                 // Send any values that we have mappings for
                 for (let i = 0; i < keys.length; i++) {
                     const e = keys[i];
-                    msg.emit("/board/command", "mixSub", "set", `fx:${desc.name}`, e.sub, desc.common.targets![e.key]);
+                    msg.emit("/board/mixer", "set", `fx:${desc.name}`, e.sub, desc.common.targets![e.key]);
                 }
             },
             begin: function() {
                 msg.send(`/anime/${desc.name}/event/begin`);
                 for (let i = 0; i < keys.length; i++) {
                     const e = keys[i];
-                    msg.emit("/board/command", "mixSub", "enable", `fx:${desc.name}`);
+                    msg.emit("/board/mixer", "enable", `fx:${desc.name}`);
                 }
             },
             complete: function() {
@@ -101,7 +101,7 @@ export default function init(msg:Messager) {
             } else {
                 atl.play();
             }
-            msg.emit("/board/command", "mixSub", "enable", `fx:${desc.name}`);
+            msg.emit("/board/mixer", "enable", `fx:${desc.name}`);
         });
         msg.on(`/anime/${desc.name}/pause`, function () {
             enabled = false;
@@ -122,10 +122,10 @@ export default function init(msg:Messager) {
             atl.seek(0);
             // Reset all submaster values
             keys.forEach((sub) => {
-                msg.emit("/board/command", "mixSub", "set", `fx:${desc.name}`, sub.sub, 0);
+                msg.emit("/board/mixer", "set", `fx:${desc.name}`, sub.sub, 0);
             });
             // Let other effects have control
-            msg.emit("/board/command", "mixSub", "disable", `fx:${desc.name}`);
+            msg.emit("/board/mixer", "disable", `fx:${desc.name}`);
         });
         msg.on(`/anime/${desc.name}/seek`, function (time: number) {
             atl.seek(time);
@@ -133,7 +133,7 @@ export default function init(msg:Messager) {
         msg.on(`/anime/${desc.name}/remove`, function () {
             atl.pause();
             msg.emit(`/fx/${desc.name}/remove`); // Remove from fx engine
-            msg.emit("/board/command", "mixSub", "remove", `fx:${desc.name}`); // Remove from SubMixer
+            msg.emit("/board/mixer", "remove", `fx:${desc.name}`); // Remove from SubMixer
 
             // Remove event listeners
             msg.removeAllListeners(`/anime/${desc.name}/play`);

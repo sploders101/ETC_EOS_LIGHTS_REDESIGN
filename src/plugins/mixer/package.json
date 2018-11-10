@@ -1,0 +1,9 @@
+{
+  "name": "mixer",
+  "version": "1.0.0",
+  "description": "Mixes properties in software before sending to the board",
+  "main": "plugin.ts",
+  "author": "Shaun Keys",
+  "license": "MIT",
+  "private": true
+}
