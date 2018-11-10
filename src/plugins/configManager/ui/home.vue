@@ -12,7 +12,7 @@
         <md-dialog :md-active.sync="showDialog">
             <md-dialog-title>Details</md-dialog-title>
             <p class="dialogContent">
-                This plugin provides a configuration manager to keep all plugins' configuration files in the same place.
+                This plugin provides a configuration manager to keep all plugins' configuration files cached, persistent, and in the same place.
             </p>
             <md-dialog-actions>
                 <md-button class="md-primary" @click="showDialog = false;">OK</md-button>

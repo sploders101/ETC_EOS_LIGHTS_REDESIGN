@@ -59,4 +59,8 @@ export default function init(msg:Messager) {
             updateSubMix(sub);
         })
     }, 10);
+
+    msg.on("/home/mounted", () => {
+        msg.send("/home/add", `${__dirname}/ui/home`);
+    });
 }
