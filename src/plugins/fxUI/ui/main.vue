@@ -4,7 +4,12 @@
             <fx-toggle v-for="effect in effects" :key="effect.name" :assign.sync="assignMode" :effect="effect.name" :enabled.sync="effect.state">{{ effect.displayName }}</fx-toggle>
         </div>
         <div class="clicks">
-            <div class="defaultClick" @click="assignDefaultClick()" @dblclick="assignAllDefaultClick()">Default</div>
+            <div class="defaultClick" @click="assignDefaultClick()" @dblclick="assignAllDefaultClick()">
+                <div class="name">
+                    Default
+                </div>
+                <div class="assign" v-if="assignMode=='default'"><div></div></div>
+            </div>
             <fx-click v-for="click in clicks" :key="click.name" :defaultClick="defaultClick" :click="click.name" :assign.sync="assignMode" :default.sync="click.state">{{ click.displayName }}</fx-click>
         </div>
         <div class="secondaryClicks"></div>
@@ -31,10 +36,14 @@
         },
         methods: {
             assignDefaultClick: function() {
-                this.assignMode = "default";
+                if(this.assignMode=="default") {
+                    this.assignMode = false;
+                } else {
+                    this.assignMode = "default";
+                }
             },
-            assignAllDefaultClick: function(e:any) {
-                if(e) e.preventDefault();
+            assignAllDefaultClick: function() {
+                this.assignMode = false;
                 this.effects.forEach((fx) => {
                     ipcRenderer.send(`/fx/${fx.name}/use`,"default");
                 });
@@ -75,12 +84,34 @@
     }
 
     .defaultClick {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 2.5em;
-        margin: 0.25em;
+        display: grid;
+        grid-template-columns: [assign] 20% [end-assign] 5% [label] 50% [end-label] 5% [tap] 20% [end-tap];
+        grid-template-rows: [top] 100% [bottom];
+        height: 5em;
+        margin: 0.5em;
         background-color: #616161;
-        font-size: 2em;
+
+        div.name {
+            grid-area: top / assign / bottom / end-tap;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 2em;
+        }
+        div.assign {
+            grid-area: top / assign / bottom / end-assign;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            div {
+                width: 30%;
+                height: 30%;
+                border-radius: 50%;
+                background-color: white;
+            }
+        }
     }
 </style>
