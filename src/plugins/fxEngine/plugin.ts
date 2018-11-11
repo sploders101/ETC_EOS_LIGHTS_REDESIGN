@@ -115,8 +115,12 @@ export default function init(msg:Messager) {
         msg.on(`/fx/${name}/stop`, () => {
             msg.emit(`/fx/${name}/pause`);
         });
+        msg.on(`/fx/${name}/getClick`, () => {
+            msg.send(`/fx/${name}/using`,rFX.get(name)!.interface);
+        });
         msg.on(`/fx/${name}/use`, (clickName: string) => {
             rFX.get(name)!.interface = clickName;
+            msg.send(`/fx/${name}/using`, clickName);
         });
         msg.on(`/fx/${name}/remove`, () => {
             rFX.delete(name);
