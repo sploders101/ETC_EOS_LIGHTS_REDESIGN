@@ -2,19 +2,21 @@
     <div class="fxClick">
         <div class="assign" @click="assignf()"></div>
         <div class="label" @click="setDefault()" :class="(defaultClick==click) ? ('green') : ('red')"><slot></slot></div>
-        <div class="tap" @click="tap()"></div>
+        <div class="tap" @click="tap()">
+            <div :style="{opacity: state}"></div>
+        </div>
     </div>
 </template>
 
 <script lang="ts">
     import Vue from '../../../ui/wrapper/vue';
     import { VueConstructor } from 'vue';
-import { ipcRenderer } from 'electron';
+    import { ipcRenderer } from 'electron';
     export default Vue.extend({
         props: ["defaultClick","click","assign"],
         data: function() {
             return {
-
+                state: 0
             }
         },
         methods: {
@@ -27,6 +29,11 @@ import { ipcRenderer } from 'electron';
             assignf: function() {
                 this.$emit("update:assign",this.click);
             }
+        },
+        mounted: function() {
+            ipcRenderer.on(`/fxui/click/${this.click}/state`,(_:any, num:number) => {
+                this.state = -Math.abs(num-1)+1;
+            });
         }
     });
 </script>
@@ -59,6 +66,17 @@ import { ipcRenderer } from 'electron';
         .tap {
             background-color: #616161;
             grid-area: top / tap / bottom / end-tap;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            div {
+                width: 30%;
+                height: 30%;
+                border-radius: 50%;
+                background-color: white;
+            }
         }
     }
 </style>

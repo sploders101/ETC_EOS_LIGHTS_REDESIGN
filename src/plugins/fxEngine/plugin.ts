@@ -136,5 +136,10 @@ export default function init(msg:Messager) {
                 msg.emit(`/anime/${name}/seek`, clicks.get(desc.interface)!.seeker(desc.duration));
         });
     });
+    setInterval(() => {
+        clicks.forEach((click, name) => {
+            msg.send(`/fxui/click/${name}/state`, click.seeker(2));
+        });
+    },50);
 
 }
