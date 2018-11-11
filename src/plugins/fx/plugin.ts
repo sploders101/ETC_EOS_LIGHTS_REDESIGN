@@ -68,16 +68,20 @@ export default function init(msg:Messager) {
                 // Report new values to anything listening
                 msg.send(`/anime/${desc.name}/event/update`,desc.common.targets);
                 // Send any values that we have mappings for
-                for (let i = 0; i < keys.length; i++) {
-                    const e = keys[i];
-                    msg.emit("/board/mixer", "set", `fx:${desc.name}`, e.sub, desc.common.targets![e.key]);
+                if(desc.linkToSubs) {
+                    for (let i = 0; i < keys.length; i++) {
+                        const e = keys[i];
+                        msg.emit("/board/mixer", "set", `fx:${desc.name}`, e.sub, desc.common.targets![e.key]);
+                    }
                 }
             },
             begin: function() {
                 msg.send(`/anime/${desc.name}/event/begin`);
-                for (let i = 0; i < keys.length; i++) {
-                    const e = keys[i];
-                    msg.emit("/board/mixer", "enable", `fx:${desc.name}`);
+                if(desc.linkToSubs) {
+                    for (let i = 0; i < keys.length; i++) {
+                        const e = keys[i];
+                        msg.emit("/board/mixer", "enable", `fx:${desc.name}`);
+                    }
                 }
             },
             complete: function() {
@@ -119,16 +123,24 @@ export default function init(msg:Messager) {
             } else {
                 atl.pause();
             }
-            atl.seek(0);
+            // atl.seek(0);
             // Reset all submaster values
-            keys.forEach((sub) => {
-                msg.emit("/board/mixer", "set", `fx:${desc.name}`, sub.sub, 0);
-            });
+            // keys.forEach((sub) => {
+            //     msg.emit("/board/mixer", "set", `fx:${desc.name}`, sub.sub, 0);
+            // });
             // Let other effects have control
             msg.emit("/board/mixer", "disable", `fx:${desc.name}`);
         });
         msg.on(`/anime/${desc.name}/seek`, function (time: number) {
             atl.seek(time);
+        });
+        msg.on(`/anime/${desc.name}/setDirection`, function(reversed: boolean, autoplay: boolean) {
+            if(reversed != atl.reversed) {
+                atl.reverse();
+                if(autoplay) atl.play();
+            } else {
+                if(autoplay) atl.play();
+            }
         });
         msg.on(`/anime/${desc.name}/remove`, function () {
             atl.pause();

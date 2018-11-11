@@ -4,7 +4,7 @@
             <fx-toggle v-for="effect in effects" :key="effect.name" :assign.sync="assignMode" :effect="effect.name" :enabled.sync="effect.state">{{ effect.displayName }}</fx-toggle>
         </div>
         <div class="clicks">
-            <div class="defaultClick" @click="assignDefaultClick()">Default</div>
+            <div class="defaultClick" @click="assignDefaultClick()" @dblclick="assignAllDefaultClick()">Default</div>
             <fx-click v-for="click in clicks" :key="click.name" :defaultClick="defaultClick" :click="click.name" :assign.sync="assignMode" :default.sync="click.state">{{ click.displayName }}</fx-click>
         </div>
         <div class="secondaryClicks"></div>
@@ -32,6 +32,12 @@
         methods: {
             assignDefaultClick: function() {
                 this.assignMode = "default";
+            },
+            assignAllDefaultClick: function(e:any) {
+                if(e) e.preventDefault();
+                this.effects.forEach((fx) => {
+                    ipcRenderer.send(`/fx/${fx.name}/use`,"default");
+                });
             }
         },
         mounted: function() {

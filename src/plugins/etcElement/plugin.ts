@@ -47,9 +47,14 @@ export class oscPortWrapper {
 export default function init(msg: Messager) {
     let config:oscDest;
     function updateConfig(cfg:ETCConfig) {
-        config = {
-            remoteAddress: cfg.OSCAddress,
-            remotePort: cfg.OSCPort
+        if(config) {
+            config.remoteAddress = cfg.OSCAddress,
+            config.remotePort = cfg.OSCPort
+        } else {
+            config = {
+                remoteAddress: cfg.OSCAddress,
+                remotePort: cfg.OSCPort
+            }
         }
     }
     msg.once("/config/get/etcElement",(cfg:ETCConfig) => {

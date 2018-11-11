@@ -8,7 +8,7 @@ export default function init(msg:Messager) {
 }
 ```
 
-# Messages
+# Core Messages
 
 ## /ui/addRoute
 ```typescript
@@ -41,3 +41,6 @@ msg.on("/settings/mounted",() => {
     msg.send("/settings/add","/path/to/component");
 });
 ```
+
+# Plugin Messages
+Plugins should have documentation on their APIs in a file titled ```notes.md```, documented in a similar fasion to this one.
