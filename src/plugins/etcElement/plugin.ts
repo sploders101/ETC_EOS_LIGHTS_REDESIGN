@@ -64,6 +64,9 @@ export default function init(msg: Messager) {
         msg.on("/board/command", function (cmd: string, ...args: any[]) {
             element[cmd].apply(element, args);
         });
+        msg.on("/board/ping", function() {
+            
+        });
     });
     msg.emit("/config/get","etcElement",defaultConfig);
 
