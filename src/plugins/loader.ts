@@ -7,6 +7,7 @@ export class Messager extends Emitter {
     mainWindow:BrowserWindow;
     constructor(mw:BrowserWindow) {
         super();
+        this.setMaxListeners(999);
         this.mainWindow = mw;
         let oldEmit = ipcMain.emit;
         // Override ipcMain's emit function to bridge it to the global messager
