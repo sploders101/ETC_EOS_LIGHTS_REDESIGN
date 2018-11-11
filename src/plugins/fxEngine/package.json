@@ -1,8 +1,8 @@
 {
-  "name": "fxEngine",
+  "name": "fxengine",
   "version": "1.0.0",
   "description": "Timekeeper for fx, based on beats rather than time",
-  "main": "index.ts",
+  "main": "plugin.ts",
   "author": "Shaun Keys",
   "license": "MIT",
   "private": true,
