@@ -57,7 +57,7 @@ msg.send("/anime/timeline/pause","test2");
 
 ## /anime/timeline/seek
 ```typescript
-msg.send("/anime/timeline/seek","test2",500/* ms*/);
+msg.send("/anime/timeline/seek","test2",500/* ms or musical beats*/);
 ```
 
 ## /anime/timeline/remove
