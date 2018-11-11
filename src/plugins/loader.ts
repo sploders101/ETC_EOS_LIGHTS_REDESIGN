@@ -18,7 +18,7 @@ export class Messager extends Emitter {
     }
     send(channel:string,...msg:any) {
         this.emit(channel,...msg);
-        this.mainWindow.webContents.send(channel,...msg);
+        if(this.mainWindow) this.mainWindow.webContents.send(channel,...msg);
     }
 };
 

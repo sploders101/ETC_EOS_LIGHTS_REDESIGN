@@ -5,9 +5,9 @@
 					<md-button slot="menubtn" class="md-icon-button" @click="menuVisible = !menuVisible">
 						<md-icon>menu</md-icon>
 					</md-button>
-					<md-button slot="status" class="md-icon-button">
-						<md-icon v-if="board_responded">wifi</md-icon>
-						<md-icon v-if="!board_responded">wifi_off</md-icon>
+					<md-button slot="status" class="md-icon-button" @click="connectionDialogVisible = true;">
+						<md-icon v-if="board_connected">wifi</md-icon>
+						<md-icon v-if="!board_connected">wifi_off</md-icon>
 					</md-button>
 				</titlebar>
 			</md-app-toolbar>
@@ -15,6 +15,16 @@
 				<navlist :md-active.sync="menuVisible" />
 			</md-app-drawer>
 			<md-app-content>
+				<md-dialog :md-active.sync="connectionDialogVisible">
+					<md-dialog-title>Board Connection</md-dialog-title>
+					<p class="dialogContent">
+						The light board is {{ (board_connected) ? ("") : ("not ") }}connected.
+					</p>
+					<md-dialog-actions>
+						<md-button class="md-primary" v-for="action in pingActions" :key="action.action" @click="sendAction(action.action)">{{ action.display }}</md-button>
+						<md-button class="md-primary" @click="connectionDialogVisible = false;">OK</md-button>
+					</md-dialog-actions>
+				</md-dialog>
 				<router-view></router-view>
 			</md-app-content>
 		</md-app>
@@ -67,27 +77,37 @@ export default Vue.extend({
 	data() {
 		return {
 			menuVisible: false,
-			board_responded: false,
-			pinging: false
+			board_connected: false,
+			connectionDialogVisible: false,
+			pingActions: [] as {
+				display: string;
+				action: string;
+			}[]
 		}
 	},
 	router: router,
+	methods: {
+		sendAction(path:string) {
+			ipcRenderer.send(path);
+		}
+	},
 	mounted() {
-		let pingTimeout:NodeJS.Timer;
 		ipcRenderer.send("/ui/mounted");
 		ipcRenderer.on("/board/ping/response",() => {
-			if(pingTimeout) clearTimeout(pingTimeout);
-			this.pinging = false;
-			this.board_responded = true;
+			this.board_connected = true;
+		});
+		ipcRenderer.on("/board/ping/timeout",() => {
+			this.board_connected = false;
 		});
 		setInterval(() => {
-			this.pinging = true;
-			pingTimeout = setTimeout(() => {
-				this.pinging = false;
-				this.board_responded = false;
-			},200);
 			ipcRenderer.send("/board/ping");
-		},1000);
+		},500);
+		ipcRenderer.on("/board/ping/actions",(_:any, descriptor:{display:string;action:string;}[]) => {
+			descriptor.forEach((v) => {
+				this.pingActions.push(v);
+			})
+		});
+		ipcRenderer.send("/board/ping/getActions");
 	}
 });
 </script>
@@ -105,4 +125,8 @@ export default Vue.extend({
 			padding: 0;
 		}
 	}
+	.dialogContent {
+        margin-left: 24px;
+        margin-right: 24px;
+    }
 </style>

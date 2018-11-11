@@ -10,10 +10,12 @@
 // └─────────┘
 import board from './etc_eos_element';
 import { Messager } from '../loader';
-import { oscMsg } from 'osc';
+import { oscMsg, oscCfg } from 'osc';
 import { oscDest } from 'oscPlugin';
 import { EventEmitter } from 'events';
 import { ETCConfig } from './typings/config';
+import { isIPv4 } from 'net';
+import { networkInterfaces } from 'os';
 
 let defaultConfig: ETCConfig = {
     OSCAddress: "0.0.0.0",
@@ -65,7 +67,70 @@ export default function init(msg: Messager) {
             element[cmd].apply(element, args);
         });
         msg.on("/board/ping", function() {
-            
+            element.ping("Synapse Lighting Poll",200).then((response) => {
+                if(response) {
+                    msg.send("/board/ping/response");
+                } else {
+                    msg.send("/board/ping/timeout");
+                }
+            });
+        });
+        // When UI asks for available actions for troubleshooting connection...
+        msg.on("/board/ping/getActions", () => {
+            msg.send("/board/ping/actions",[
+                {
+                    display: "Configure OSC TX",
+                    action: "/board/configTX"
+                }
+            ])
+        });
+        msg.on("/board/configTX", () => {
+            let interfaces = networkInterfaces();
+            Object.keys(interfaces).forEach((key) => {
+                for (let j = 0; j < interfaces[key].length; j++) {
+                    const nif = interfaces[key][j];
+                    if (nif.family == "IPv4") {
+                        let netmask = nif.netmask.split(".").map((v) => Number(v));
+                        let ip = nif.address.split(".").map((v) => Number(v));
+                        let targetIP = config.remoteAddress.split(".").map((v) => Number(v));
+                        let isMatch = true;
+                        for (let i = 0; i < 4; i++) {
+                            let matches = (((~(ip[i] ^ targetIP[i])) & netmask[i]) == netmask[i]);
+                            if (!matches) {
+                                isMatch = false;
+                                break;
+                            }
+                        }
+                        if (isMatch) {
+                            msg.once("/config/get/oscPort", (oscCfg:oscCfg) => {
+                                configureTX(msg,config,nif.address,(oscCfg.localPort || 57121));
+                            });
+                            msg.send("/config/get","oscPort");
+                            break;
+                        } else {
+                            continue;
+                        }
+                    } 
+                }
+                // interfaces[key].forEach((nif) => {
+                //     if(nif.family=="IPv4") {
+                //         let netmask = nif.netmask.split(".").map((v) => Number(v));
+                //         let ip = nif.address.split(".").map((v) => Number(v));
+                //         let targetIP = config.remoteAddress.split(".").map((v) => Number(v));
+                //         let isMatch = true;
+                //         for (let i = 0; i < 4; i++) {
+                //             let matches = ( ( ( ~( ip[i] ^ targetIP[i] ) ) & netmask[i] ) == netmask[i] );
+                //             if(!matches) {
+                //                 isMatch = false;
+                //                 break;
+                //             }
+                //         }
+                //         if(!isMatch) {
+                //             continue;
+                //         }
+                //     } 
+                // });
+            });
         });
     });
     msg.emit("/config/get","etcElement",defaultConfig);
@@ -85,4 +150,27 @@ export default function init(msg: Messager) {
     msg.on("/settings/mounted", () => {
         msg.send("/settings/add", `${__dirname}/ui/settings`);
     });
+}
+
+function configureTX(msg:Messager, dest:oscDest, ip:string, port:number) {
+    if(isIPv4(ip)) {
+        msg.emit("/oscPort/out", dest, { address: "/eos/key/osc_tx_ip_address" } as oscMsg);
+        msg.emit("/oscPort/out", dest, { address: "/eos/key/clear_text" } as oscMsg);
+        // Get local address
+        for (let i = 0; i < ip.length; i++) {
+            const char = ip[i];
+            msg.emit("/oscPort/out", dest, { address: `/eos/key/${char}` } as oscMsg);
+        }
+        // Continue...
+        msg.emit("/oscPort/out", dest, { address: "/eos/key/enter" } as oscMsg);
+        msg.emit("/oscPort/out", dest, { address: "/eos/key/osc_tx_port_number" } as oscMsg);
+        // Get port number
+        let sPort = String(port);
+        for (let i = 0; i < sPort.length; i++) {
+            const char = sPort[i];
+            msg.emit("/oscPort/out", dest, { address: `/eos/key/${char}` } as oscMsg);
+        }
+        // Continue...
+        msg.emit("/oscPort/out", dest, { address: "/eos/key/enter" } as oscMsg);
+    }
 }
