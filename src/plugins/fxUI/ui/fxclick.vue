@@ -2,7 +2,7 @@
     <div class="fxClick">
         <div class="assign" @click="assignf()"></div>
         <div class="label" @click="setDefault()" :class="(defaultClick==click) ? ('green') : ('red')"><slot></slot></div>
-        <div class="tap" @click="tap()">
+        <div class="tap" @click="tap('click')" @touchstart="tap('touch',$event)">
             <div :style="{opacity: state}"></div>
         </div>
     </div>
@@ -23,7 +23,8 @@
             setDefault: function() {
                 ipcRenderer.send(`/fx/click/${this.click}/setDefault`);
             },
-            tap: function() {
+            tap: function(type:string,e?:Event) {
+                if(type=="touch") e!.preventDefault();
                 ipcRenderer.send(`/fx/click/${this.click}/tap`);
             },
             assignf: function() {

@@ -1,5 +1,5 @@
 <template>
-    <div class="fxToggle" :class="[(enabled ? 'fxActive':'fxInactive')]" @click="toggleEffect()">
+    <div class="fxToggle" :class="[(enabled ? 'fxActive':'fxInactive')]" @click="toggleEffect('click')" @touchstart="toggleEffect('touch',$event)">
         <slot></slot>
         <div class="click">{{clickName}}</div>
     </div>
@@ -23,7 +23,8 @@
             ipcRenderer.send(`/fx/${this.effect}/getClick`);
         },
         methods: {
-            toggleEffect: function() {
+            toggleEffect: function(type:string, e:Event) {
+                if(type=="touch") e.preventDefault();
                 if(this.assign) {
                     ipcRenderer.send(`/fx/${this.effect}/use`,this.assign);
                     this.$emit("update:assign",false);
