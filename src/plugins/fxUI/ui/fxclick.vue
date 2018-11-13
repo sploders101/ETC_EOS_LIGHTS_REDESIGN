@@ -1,6 +1,8 @@
 <template>
     <div class="fxClick">
-        <div class="assign" @click="assignf()"></div>
+        <div class="assign" @click="assignf()">
+            <div v-if="assign==click"></div>
+        </div>
         <div class="label" @click="setDefault()" :class="(defaultClick==click) ? ('green') : ('red')"><slot></slot></div>
         <div class="tap" @click="tap('click')" @touchstart="tap('touch',$event)">
             <div :style="{opacity: state}"></div>
@@ -28,7 +30,11 @@
                 ipcRenderer.send(`/fx/click/${this.click}/tap`);
             },
             assignf: function() {
-                this.$emit("update:assign",this.click);
+                if(this.click==this.assign) {
+                    this.$emit("update:assign", false);
+                } else {
+                    this.$emit("update:assign",this.click);
+                }
             }
         },
         mounted: function() {
@@ -50,6 +56,16 @@
         .assign {
             background-color: #616161;
             grid-area: top / assign / bottom / end-assign;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            div {
+                width: 30%;
+                height: 30%;
+                border-radius: 50%;
+                background-color: white;
+            }
         }
         .label {
             grid-area: top / label / bottom / end-label;

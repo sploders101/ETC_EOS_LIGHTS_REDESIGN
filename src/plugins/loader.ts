@@ -1,6 +1,6 @@
-// +---------------------+
-// |   Create messager   |
-// +---------------------+
+// ┌─────────────────┐
+// │ Create Messager │
+// └─────────────────┘
 import Emitter = require("events");
 import {ipcMain, BrowserWindow} from 'electron';
 export class Messager extends Emitter {
@@ -18,13 +18,13 @@ export class Messager extends Emitter {
     }
     send(channel:string,...msg:any) {
         this.emit(channel,...msg);
-        this.mainWindow.webContents.send(channel,...msg);
+        if(this.mainWindow) this.mainWindow.webContents.send(channel,...msg);
     }
 };
 
-// +--------------------+
-// |   Import plugins   |
-// +--------------------+
+// ┌────────────────┐
+// │ Import Plugins │
+// └────────────────┘
 import configManager from "./configManager"; // Configuration manager
 import oscPort from "./oscPort";
 import etcElement from "./etcElement"; // Communication controller
