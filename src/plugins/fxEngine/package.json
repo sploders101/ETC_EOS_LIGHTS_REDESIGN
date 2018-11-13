@@ -5,7 +5,5 @@
   "main": "plugin.ts",
   "author": "Shaun Keys",
   "license": "MIT",
-  "private": true,
-  "dependencies": {
-  }
+  "private": true
 }
