@@ -1,6 +1,6 @@
-// +---------------------+
-// |   Create messager   |
-// +---------------------+
+// ┌─────────────────┐
+// │ Create Messager │
+// └─────────────────┘
 import Emitter = require("events");
 import {ipcMain, BrowserWindow} from 'electron';
 export class Messager extends Emitter {
@@ -22,9 +22,9 @@ export class Messager extends Emitter {
     }
 };
 
-// +--------------------+
-// |   Import plugins   |
-// +--------------------+
+// ┌────────────────┐
+// │ Import Plugins │
+// └────────────────┘
 import configManager from "./configManager"; // Configuration manager
 import oscPort from "./oscPort";
 import etcElement from "./etcElement"; // Communication controller

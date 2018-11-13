@@ -1,6 +1,6 @@
 {
-  "name": "etc_eos_vue",
-  "productName": "etc_eos_vue",
+  "name": "Synapse-Lighting-Redux",
+  "productName": "Synapse-Lighting-Redux",
   "version": "1.0.0",
   "description": "My Electron application description",
   "main": "src/index.ts",
