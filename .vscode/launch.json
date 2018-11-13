@@ -5,6 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "electron",
+            "request": "launch",
+            "name": "Launch Electron",
+            "sourceMaps": true
+        },
+        {
             "type": "node",
             "request": "launch",
             "name": "Electron Main",
