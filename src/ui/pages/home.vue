@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<component v-for="homeCard in home" :is="homeCard.component" :key="homeCard.path" />
+		<component v-for="homeCard in home" :is="homeCard.component" :key="homeCard.path"></component>
 	</div>
 </template>
 

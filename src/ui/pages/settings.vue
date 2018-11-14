@@ -1,6 +1,6 @@
 <template>
 	<div class="settings">
-		<component v-for="settingCard in settings" :is="settingCard.component" :key="settingCard.path" />
+		<component v-for="settingCard in settings" :is="settingCard.component" :key="settingCard.path"></component>
 	</div>
 </template>
 

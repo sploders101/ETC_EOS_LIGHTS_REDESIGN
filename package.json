@@ -5,73 +5,33 @@
   "description": "My Electron application description",
   "main": "src/index.ts",
   "private": true,
-  "workspaces": ["src/plugins/*"],
-  "scripts": {
-    "start": "electron-forge start",
-    "package": "electron-forge package",
-    "make": "electron-forge make",
-    "publish": "electron-forge publish",
-    "lint": "echo \"No linting configured\""
-  },
+  "workspaces": [
+    "src/plugins/*"
+  ],
+  "scripts": {},
   "keywords": [],
   "author": "shaun",
   "license": "MIT",
-  "config": {
-    "forge": {
-      "make_targets": {
-        "win32": [
-          "squirrel"
-        ],
-        "darwin": [
-          "zip"
-        ],
-        "linux": [
-          "deb",
-          "rpm"
-        ]
-      },
-      "electronPackagerConfig": {
-        "packageManager": "yarn"
-      },
-      "electronWinstallerConfig": {
-        "name": "etc_eos_vue"
-      },
-      "electronInstallerDebian": {},
-      "electronInstallerRedhat": {},
-      "github_repository": {
-        "owner": "",
-        "name": ""
-      },
-      "windowsStoreConfig": {
-        "packageName": "",
-        "name": "etc_eos_vue"
-      }
-    }
-  },
   "dependencies": {
-    "electron-compile": "^6.4.3",
-    "electron-devtools-installer": "^2.1.0",
     "electron-squirrel-startup": "^1.0.0",
-    "esm": "^3.0.84",
     "insert-css": "^2.0.0",
     "material-design-icons": "^3.0.1",
-    "netmask": "^1.0.6",
-    "osc": "^2.2.4",
     "tslib": "^1.9.3",
     "vue": "^2.1.7",
-    "vue-devtools": "^5.0.0-beta.1",
     "vue-material": "^1.0.0-beta-10.2",
-    "vue-router": "^3.0.1",
-    "vueify": "^9.4.1"
+    "vue-router": "^3.0.1"
   },
   "devDependencies": {
     "@types/vue-material": "git+https://github.com/calebsander/vue-material-types.git",
-    "babel-plugin-transform-async-to-generator": "^6.24.1",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-es2017-node7": "^0.5.2",
-    "babel-preset-react": "^6.24.1",
-    "electron-forge": "^5.2.2",
-    "electron-prebuilt-compile": "2.0.7",
-    "tslint": "^5.11.0"
+    "electron": "^3.0.8",
+    "electron-rebuild": "^1.8.2",
+    "gulp": "^3.9.1",
+    "gulp-sass": "^4.0.2",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-typescript": "^5.0.0-alpha.3",
+    "gulp-vueify": "^0.0.3",
+    "tslint": "^5.11.0",
+    "typescript": "^3.1.6",
+    "vue-devtools": "^5.0.0-beta.1"
   }
 }

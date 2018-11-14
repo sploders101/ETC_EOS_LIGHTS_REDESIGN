@@ -2,7 +2,7 @@
 	"compilerOptions": {
 		"removeComments": false,
 		"preserveConstEnums": true,
-		"sourceMap": true,
+		"inlineSourceMap": true,
 		"declaration": true,
 		"noImplicitAny": true,
 		"noImplicitReturns": true,
@@ -16,7 +16,11 @@
 		"module": "commonjs",
 		"moduleResolution": "node",
 		"pretty": true,
-		"target": "es2015"
+		"target": "es2016",
+		"baseUrl": "./src",
+		"esModuleInterop": true,
+		"outDir": "./out/",
+		"rootDir": "./src/"
 	},
 	"formatCodeOptions": {
 		"indentSize": 2,
