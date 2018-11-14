@@ -1,8 +1,8 @@
 <template>
 	<div class="main">
-		<div class="left nodrag"><slot name="menubtn" /></div>
+		<div class="left nodrag"><slot name="menubtn"></slot></div>
 		<h3 class="left md-title">EOS Control</h3>
-		<div class="right nodrag"><slot name="status" /></div>
+		<div class="right nodrag"><slot name="status"></slot></div>
 		<md-button class="right md-icon-button nodrag" @click='window("minimize")'>
 			<md-icon>minimize</md-icon>
 		</md-button>
@@ -18,8 +18,7 @@
 <script lang="ts">
 	import {ipcRenderer} from 'electron';
 	import {WindowState} from '../../interfaces';
-	import Vue from '../wrapper/vue';
-	import {VueConstructor} from 'vue';
+	import Vue, {VueConstructor} from 'vue';
 
 	export default Vue.extend({
 		data: () => {

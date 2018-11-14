@@ -1,11 +1,11 @@
 <template>
 	<div>
-		<component v-for="homeCard in home" :is="homeCard.component" :key="homeCard.path" />
+		<component v-for="homeCard in home" :is="homeCard.component" :key="homeCard.path"></component>
 	</div>
 </template>
 
 <script lang="ts">
-	import Vue from '../wrapper/vue';
+	import Vue from 'vue';
 	import {ipcRenderer} from 'electron';
 	import {VueConstructor} from 'vue';
 	import {UICard} from '../../interfaces';

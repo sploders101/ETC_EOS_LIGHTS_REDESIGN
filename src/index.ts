@@ -1,5 +1,4 @@
 import { app,BrowserWindow,ipcMain } from 'electron';
-import { enableLiveReload } from 'electron-compile';
 import {init} from './plugins/loader';
 // import {WindowState} from './interfaces';
 
@@ -24,7 +23,6 @@ function start() {
 	if(isDevMode) {
 		// Install devtools
 		require("vue-devtools").install();
-		enableLiveReload();
 	}
 
 	// Create the browser window.

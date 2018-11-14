@@ -12,7 +12,7 @@
 				</titlebar>
 			</md-app-toolbar>
 			<md-app-drawer :md-active.sync="menuVisible">
-				<navlist :md-active.sync="menuVisible" />
+				<navlist :md-active.sync="menuVisible"></navlist>
 			</md-app-drawer>
 			<md-app-content>
 				<md-dialog :md-active.sync="connectionDialogVisible">
@@ -31,18 +31,18 @@
 </template>
 
 <script lang="ts">
-import Vue from './wrapper/vue';
+import Vue from 'vue';
 import VueMaterial from 'vue-material';
 import {VueConstructor} from 'vue';
 import {ipcRenderer} from 'electron';
-import VueRouter from './wrapper/vue-router';
-import mdSlider from './components/mdSlider/index.js';
+import VueRouter from 'vue-router';
+// import mdSlider from './components/mdSlider/index.js';
 import {UIEntry} from '../interfaces'
 import { setInterval } from 'timers';
 
 Vue.use(VueRouter);
 Vue.use(VueMaterial);
-Vue.use(mdSlider);
+// Vue.use(mdSlider);
 
 let home = require('./pages/home');
 let settings = require('./pages/settings');
