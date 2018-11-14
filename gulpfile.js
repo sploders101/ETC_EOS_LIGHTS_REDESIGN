@@ -93,4 +93,4 @@ gulp.task("vue",vue);
 gulp.task("html",html);
 gulp.task("pluginJSON",pluginJSON);
 gulp.task("moduleJSON",moduleJSON);
-gulp.task("all",["ts","sass","vue","html","pluginJSON","moduleJSON"]);
+gulp.task("default",["ts","sass","vue","html","pluginJSON","moduleJSON"]);
