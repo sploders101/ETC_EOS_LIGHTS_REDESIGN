@@ -8,7 +8,9 @@
   "workspaces": [
     "src/plugins/*"
   ],
-  "scripts": {},
+  "scripts": {
+    "start": "gulp && electron ./"
+  },
   "keywords": [],
   "author": "shaun",
   "license": "MIT",
