@@ -8,7 +8,9 @@
             "type": "electron",
             "request": "launch",
             "name": "Launch Electron",
-            "sourceMaps": true
+            "sourceMaps": true,
+            "appDir": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}"
         },
         {
             "type": "node",
