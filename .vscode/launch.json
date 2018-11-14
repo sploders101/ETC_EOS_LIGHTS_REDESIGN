@@ -10,7 +10,8 @@
             "name": "Launch Electron",
             "sourceMaps": true,
             "appDir": "${workspaceFolder}",
-            "cwd": "${workspaceFolder}"
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "gulp"
         },
         {
             "type": "node",
