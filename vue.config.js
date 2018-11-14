@@ -1,6 +1,11 @@
 let ts = require("typescript");
 let fs = require("fs");
 
+let moduleChanges = new Map([
+    ["vue",{esm:true,path:"vue/dist/vue.esm.js"}],
+    ["vue-router",{esm:true,path:"vue-router/dist/vue-router.esm.js"}]
+]);
+
 module.exports = {
     // configure a built-in compiler
     // sass: {
@@ -9,6 +14,7 @@ module.exports = {
     // provide your own postcss plugins
     // postcss: [...],
     // register custom compilers
+    runtimeCompiler: true,
     customCompilers: {
         // for tags with lang="ts"
         ts: function (content, cb, compiler, filePath) {
@@ -24,7 +30,10 @@ module.exports = {
                 compilerOptions: require(__dirname+"/tsconfig.json")
             });
 
-            cb(null, result.outputTexts);
+            result.outputText = result.outputText.replace(/require\("(.*)"\)/g, (original, reqMod) => (moduleChanges.has(reqMod)) ? (`${(moduleChanges.get(reqMod).esm) ? ('require("esm")(module)') : ('require')}("${moduleChanges.get(reqMod).path}")`) : (original));
+            `require("esm")(module)("${(moduleChanges.has(module)) ? (moduleChanges.get(module)) : (module)}")`
+
+            cb(null, result.outputText);
         }
     }
 }

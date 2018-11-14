@@ -7,7 +7,7 @@
 		<div id="app"></div>
 	</body>
 	<script>
-		let Vue = require("vue");
+		let Vue = require("esm")(module)("vue/dist/vue.esm.js").default;
 		let App = require("./app");
 		const app = new Vue(App).$mount('#app');
 	</script>

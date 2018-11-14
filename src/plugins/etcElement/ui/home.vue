@@ -23,8 +23,7 @@
 </template>
 
 <script lang="ts">
-    import Vue from '../../../ui/wrapper/vue';
-    import {VueConstructor} from 'vue';
+    import Vue, {VueConstructor} from 'vue';
     export default Vue.extend({
         data: function() {
             return {

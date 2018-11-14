@@ -3,7 +3,7 @@
   "productName": "Synapse-Lighting-Redux",
   "version": "1.0.0",
   "description": "My Electron application description",
-  "main": "src/index.ts",
+  "main": "out/index.js",
   "private": true,
   "workspaces": [
     "src/plugins/*"
@@ -14,6 +14,7 @@
   "license": "MIT",
   "dependencies": {
     "electron-squirrel-startup": "^1.0.0",
+    "esm": "^3.0.84",
     "insert-css": "^2.0.0",
     "material-design-icons": "^3.0.1",
     "tslib": "^1.9.3",

@@ -25,27 +25,6 @@ class PluginJSON extends Transform {
     }
 }
 
-class ModuleJSON extends Transform {
-    constructor() {
-        super({ objectMode: true });
-    }
-    _transform(file, encoding, cb) {
-        let error = null;
-        file.isBuilding = true;
-
-        if (file.isNull()) return cb(null, file);
-
-        if (file.isStream()) {
-            this.emit("error", new PluginError(PLUGIN_NAME, "Streams not yet supported!"));
-        } else if (file.isBuffer()) {
-            let contents = JSON.parse(file.contents.toString());
-            if(contents.module) contents.main = contents.module;
-            file.contents = Buffer.from(JSON.stringify(contents,null, 2));
-            cb(error, file);
-        }
-    }
-}
-
 function typescript() {
     return gulp.src("src/**/*.ts")
         .pipe(sourceMaps.init())
@@ -63,6 +42,7 @@ function sass() {
 }
 
 function vue() {
+    process.env.NODE_ENV="production";
     return gulp.src("src/**/*.vue")
         .pipe(sourceMaps.init())
         .pipe(vueify())
@@ -81,16 +61,9 @@ function pluginJSON() {
         .pipe(gulp.dest("out/"));
 }
 
-function moduleJSON() {
-    return gulp.src("node_modules/**/package.json")
-        .pipe(new ModuleJSON())
-        .pipe(gulp.dest("out/"));
-}
-
 gulp.task("ts",typescript);
 gulp.task("sass",sass);
 gulp.task("vue",vue);
 gulp.task("html",html);
 gulp.task("pluginJSON",pluginJSON);
-gulp.task("moduleJSON",moduleJSON);
-gulp.task("default",["ts","sass","vue","html","pluginJSON","moduleJSON"]);
+gulp.task("default",["ts","sass","vue","html","pluginJSON"]);

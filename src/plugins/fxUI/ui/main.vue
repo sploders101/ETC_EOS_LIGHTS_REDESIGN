@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-    import Vue from '../../../ui/wrapper/vue';
+    import Vue from 'vue';
     import { VueConstructor } from 'vue';
     import { ipcRenderer } from 'electron';
     import { fxUIDescriptor } from './typings';

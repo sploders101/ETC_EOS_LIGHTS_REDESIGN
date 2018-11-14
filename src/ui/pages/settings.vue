@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-	import Vue from '../wrapper/vue';
+	import Vue from 'vue';
 	import {ipcRenderer} from 'electron';
 	import {VueConstructor} from 'vue';
 	import {UICard} from '../../interfaces';

@@ -17,7 +17,7 @@
 		"moduleResolution": "node",
 		"pretty": true,
 		"target": "es2016",
-		"baseUrl": "./src",
+		"baseUrl": "./",
 		"esModuleInterop": true,
 		"outDir": "./out/",
 		"rootDir": "./src/"

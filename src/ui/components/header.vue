@@ -18,8 +18,7 @@
 <script lang="ts">
 	import {ipcRenderer} from 'electron';
 	import {WindowState} from '../../interfaces';
-	import Vue from '../wrapper/vue';
-	import {VueConstructor} from 'vue';
+	import Vue, {VueConstructor} from 'vue';
 
 	export default Vue.extend({
 		data: () => {

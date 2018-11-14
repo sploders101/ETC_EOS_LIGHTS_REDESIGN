@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {NavListData,UIEntry} from '../../interfaces';
-	import Vue from '../wrapper/vue';
+	import Vue from 'vue';
 	import {VueConstructor} from 'vue';
 	import {ipcRenderer} from 'electron';
 
