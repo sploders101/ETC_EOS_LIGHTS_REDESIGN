@@ -18,12 +18,10 @@ app.on('window-all-closed', () => {
 });
 
 function start() {
-	const isDevMode = process.execPath.match(/[\\/]electron/);
-
-	if(isDevMode) {
+	// beacon:if(!production)
 		// Install devtools
 		require("vue-devtools").install();
-	}
+	// beacon:endif
 
 	// Create the browser window.
 	mainWindow = new BrowserWindow({
@@ -33,11 +31,11 @@ function start() {
 	});
 	init(mainWindow);
 
-	if(isDevMode) {
+	// beacon:if(!production)
 		mainWindow.show();
 		mainWindow.setFullScreen(false);
 		mainWindow.maximize();
-	}
+	// beacon:endif
 	ipcMain.once('/ui/mounted', function() {
 		mainWindow.show();
 		mainWindow.setFullScreen(false);
