@@ -3,7 +3,7 @@
         <div class="assign" @click="assignf()">
             <div v-if="assign==click"></div>
         </div>
-        <div class="label" @click="setDefault()" :class="(defaultClick==click) ? ('green') : ('red')"><slot></slot></div>
+        <div class="label" @click="setDefault()" :class="(defaultclick==click) ? ('green') : ('red')"><slot></slot></div>
         <div class="tap" @click="tap('click')" @touchstart="tap('touch',$event)">
             <div :style="{opacity: state}"></div>
         </div>
@@ -15,7 +15,7 @@
     import { VueConstructor } from 'vue';
     import { ipcRenderer } from 'electron';
     export default Vue.extend({
-        props: ["defaultClick","click","assign"],
+        props: ["defaultclick","click","assign"],
         data: function() {
             return {
                 state: 0
