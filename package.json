@@ -6,7 +6,8 @@
   "main": "out/index.js",
   "private": true,
   "workspaces": [
-    "src/plugins/*"
+    "src/plugins/*",
+    "plugins/*"
   ],
   "scripts": {
     "start": "gulp && electron ./"

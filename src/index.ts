@@ -19,8 +19,8 @@ app.on('window-all-closed', () => {
 
 function start() {
 	// beacon:if(!production)
-		// Install devtools
-		require("vue-devtools").install();
+	// Install devtools
+	require("vue-devtools").install();
 	// beacon:endif
 
 	// Create the browser window.
