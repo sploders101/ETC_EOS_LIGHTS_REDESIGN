@@ -12,15 +12,11 @@ let cp = require("child_process");
 let {Replacer, Beacon, RebuildGyp, ChangeMain, GulpDebugger} = require("./gulp.helpers.js");
 let path = require("path");
 
-let env = {
-    production: true
-}
-
 // ┌──────────┐
 // │ Building │
 // └──────────┘
 
-function typescript(destination) {
+function typescript(destination,env) {
     return gulp.src("src/**/*.ts")
         .pipe(new Beacon(env))
         .pipe(sourceMaps.init())
@@ -42,11 +38,14 @@ function sass(destination) {
         .pipe(gulp.dest(destination));
 }
 
-function vue(destination) {
+function vue(destination,env) {
     return gulp.src("src/**/*.vue")
         .pipe(sourceMaps.init())
         .pipe(new Beacon(env))
         .pipe(vueify())
+        .pipe(sourceMaps.mapSources((_, file) => {
+            return path.join(path.relative(file.path, file.base), "src", path.relative(file.base, file.path)).replace(/.js$/, ".vue");
+        }))
         .pipe(sourceMaps.write())
         .pipe(gulp.dest(destination));
 }
@@ -66,10 +65,10 @@ function pluginJSON(destination) {
         .pipe(gulp.dest(destination));
 }
 
-gulp.task("ts", () => typescript("out/"));
-gulp.task("sass", () => sass("out/"));
-gulp.task("vue", () => vue("out/"));
-gulp.task("html", () => html("out/"));
+gulp.task("ts", () => typescript("out/",{production: false}));
+gulp.task("sass", () => sass("out/",{production: false}));
+gulp.task("vue", () => vue("out/",{production: false}));
+gulp.task("html", () => html("out/",{production: false}));
 gulp.task("pluginJSON", () => pluginJSON("out/"));
 gulp.task("default",["ts","sass","vue","html","pluginJSON"]);
 
@@ -101,11 +100,11 @@ function packagePackageJSON() {
         .pipe(gulp.dest("build/resources/app"));
 }
 
-gulp.task("buildTs", () => typescript("build/resources/app/"));
-gulp.task("buildSass", () => sass("build/resources/app/"));
-gulp.task("buildVue", () => vue("build/resources/app/"));
-gulp.task("buildHtml", () => html("build/resources/app/"));
-gulp.task("buildPluginJSON", () => pluginJSON("build/resources/app/"));
+gulp.task("buildTs", () => typescript("build/resources/app/",{production: true}));
+gulp.task("buildSass", () => sass("build/resources/app/",{production: true}));
+gulp.task("buildVue", () => vue("build/resources/app/",{production: true}));
+gulp.task("buildHtml", () => html("build/resources/app/",{production: true}));
+gulp.task("buildPluginJSON", () => pluginJSON("build/resources/app/",{production: true}));
 
 gulp.task("downloadElectron",downloadElectron);
 gulp.task("package_package.json",packagePackageJSON);
