@@ -86,13 +86,19 @@ function downloadElectron() {
         .pipe(gulp_unzip())
         .pipe(gulp.dest("build"));
 }
-function packageNodeModules() {
-    cp.execSync("yarn install --production",{
-        cwd: `${__dirname}/build/resources/app`
-    });
-    return gulp.src("build/resources/app/node_modules/**/binding.gyp")
-        // .pipe(new GulpDebugger(`console.log(path.join(file.path,"../"))`))
-        .pipe(new RebuildGyp(version,arch));
+function packageNodeModules(cb) {
+    Promise.all([new Promise((resolve) => {
+        let yarn = cp.spawn("yarn",["install","--production"],{
+            cwd: `${__dirname}/build/resources/app`,
+            stdio: ["ignore","inherit","inherit"]
+        });
+        yarn.on("exit", resolve);
+    }),new Promise((resolve) => {
+        let stream = gulp.src("build/resources/app/node_modules/**/binding.gyp")
+            // .pipe(new GulpDebugger(`console.log(path.join(file.path,"../"))`))
+            .pipe(new RebuildGyp(version, arch));
+        stream.on("close",resolve);
+    })]).then(cb);
 }
 function packagePackageJSON() {
     return gulp.src("package.json")
