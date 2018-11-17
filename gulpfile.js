@@ -10,6 +10,7 @@ let gulp_download = require("gulp-download2");
 let gulp_unzip = require("gulp-unzip");
 let cp = require("child_process");
 let {Replacer, Beacon, RebuildGyp, ChangeMain, GulpDebugger} = require("./gulp.helpers.js");
+let path = require("path");
 
 let env = {
     production: true
@@ -19,52 +20,57 @@ let env = {
 // │ Building │
 // └──────────┘
 
-function typescript() {
+function typescript(destination) {
     return gulp.src("src/**/*.ts")
         .pipe(new Beacon(env))
         .pipe(sourceMaps.init())
         .pipe(ts())
-        .pipe(sourceMaps.write())
-        .pipe(gulp.dest("build/resources/app/"));
+        .pipe(sourceMaps.mapSources((_,file) => {
+            return path.join(path.relative(file.path,file.base),"src",path.relative(file.base,file.path)).replace(/.js$/,".ts");
+        }))
+        .pipe(sourceMaps.write({
+            includeContent: false
+        }))
+        .pipe(gulp.dest(destination));
 }
 
-function sass() {
+function sass(destination) {
     return gulp.src("src/**/*.scss")
     .pipe(sourceMaps.init())
     .pipe(sassS())
     .pipe(sourceMaps.write())
-        .pipe(gulp.dest("build/resources/app/"));
+        .pipe(gulp.dest(destination));
 }
 
-function vue() {
+function vue(destination) {
     return gulp.src("src/**/*.vue")
         .pipe(sourceMaps.init())
         .pipe(new Beacon(env))
         .pipe(vueify())
         .pipe(sourceMaps.write())
-        .pipe(gulp.dest("build/resources/app/"));
+        .pipe(gulp.dest(destination));
 }
 
-function html() {
+function html(destination) {
     return gulp.src("src/**/*.html")
-        .pipe(gulp.dest("build/resources/app/"));
+        .pipe(gulp.dest(destination));
 }
 
 // ┌──────────────────────────┐
 // │ Fixing module extensions │
 // └──────────────────────────┘
 
-function pluginJSON() {
+function pluginJSON(destination) {
     return gulp.src("src/**/package.json")
         .pipe(new Replacer(/"main": "(.*).ts"/gi, '"main": "$1.js"'))
-        .pipe(gulp.dest("build/resources/app/"));
+        .pipe(gulp.dest(destination));
 }
 
-gulp.task("ts",typescript);
-gulp.task("sass",sass);
-gulp.task("vue",vue);
-gulp.task("html",html);
-gulp.task("pluginJSON",pluginJSON);
+gulp.task("ts", () => typescript("out/"));
+gulp.task("sass", () => sass("out/"));
+gulp.task("vue", () => vue("out/"));
+gulp.task("html", () => html("out/"));
+gulp.task("pluginJSON", () => pluginJSON("out/"));
 gulp.task("default",["ts","sass","vue","html","pluginJSON"]);
 
 // ┌───────────┐
@@ -95,7 +101,13 @@ function packagePackageJSON() {
         .pipe(gulp.dest("build/resources/app"));
 }
 
+gulp.task("buildTs", () => typescript("build/resources/app/"));
+gulp.task("buildSass", () => sass("build/resources/app/"));
+gulp.task("buildVue", () => vue("build/resources/app/"));
+gulp.task("buildHtml", () => html("build/resources/app/"));
+gulp.task("buildPluginJSON", () => pluginJSON("build/resources/app/"));
+
 gulp.task("downloadElectron",downloadElectron);
-gulp.task("package_node_modules",["package_package.json","default"],packageNodeModules);
 gulp.task("package_package.json",packagePackageJSON);
+gulp.task("package_node_modules",["package_package.json","buildTs","buildSass","buildVue","buildHtml","buildPluginJSON"],packageNodeModules);
 gulp.task("package",["downloadElectron","package_node_modules"])
