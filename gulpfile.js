@@ -87,7 +87,7 @@ function downloadElectron() {
         .pipe(gulp.dest("build"));
 }
 function packageNodeModules() {
-    cp.execSync("yarn install",{
+    cp.execSync("yarn install --production",{
         cwd: `${__dirname}/build/resources/app`
     });
     return gulp.src("build/resources/app/node_modules/**/binding.gyp")

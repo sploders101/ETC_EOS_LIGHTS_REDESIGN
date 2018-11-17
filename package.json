@@ -23,7 +23,8 @@
     "tslib": "^1.9.3",
     "vue": "^2.1.7",
     "vue-material": "^1.0.0-beta-10.2",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "vueify": "^9.4.1"
   },
   "devDependencies": {
     "@types/gulp": "^4.0.5",

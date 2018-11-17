@@ -841,7 +841,7 @@ constant-case@^1.1.0:
     snake-case "^1.1.0"
     upper-case "^1.1.1"
 
-convert-source-map@1.X, convert-source-map@^1.5.0:
+convert-source-map@1.X, convert-source-map@^1.2.0, convert-source-map@^1.5.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/convert-source-map/-/convert-source-map-1.6.0.tgz#51b537a8c43e0f04dec1993bffcdd504e758ac20"
   integrity sha512-eFu7XigvxdZ1ETfbgPBohgyQ/Z++C0eEhTor0qRwBw9unw+L0/6V8wkSuGgzdThkiS5lSpdptOQPD8Ak40a+7A==
@@ -1933,6 +1933,11 @@ he@1.0.x:
   resolved "https://registry.yarnpkg.com/he/-/he-1.0.0.tgz#6da5b265d7f2c3b5e480749168e0e159d05728da"
   integrity sha1-baWyZdfyw7XkgHSRaODhWdBXKNo=
 
+he@^1.1.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/he/-/he-1.2.0.tgz#84ae65fa7eafb165fddb61566ae14baf05664f0f"
+  integrity sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==
+
 homedir-polyfill@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/homedir-polyfill/-/homedir-polyfill-1.0.1.tgz#4c2bbc8a758998feebf5ed68580f76d46768b4bc"
@@ -2341,6 +2346,11 @@ json-stringify-safe@~5.0.1:
   resolved "https://registry.yarnpkg.com/json-stringify-safe/-/json-stringify-safe-5.0.1.tgz#1296a2d58fd45f19a0f6ce01d65701e2c735b6eb"
   integrity sha1-Epai1Y/UXxmg9s4B1lcB4sc1tus=
 
+json5@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/json5/-/json5-0.5.1.tgz#1eade7acc012034ad84e2396767ead9fa5495821"
+  integrity sha1-Hq3nrMASA0rYTiOWdn6tn6VJWCE=
+
 jsonfile@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/jsonfile/-/jsonfile-3.0.1.tgz#a5ecc6f65f53f662c4415c7675a0331d0992ec66"
@@ -2621,7 +2631,7 @@ lru-cache@2, lru-cache@^2.7.0:
   resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-2.7.3.tgz#6d4524e8b955f95d4f5b58851ce21dd72fb4e952"
   integrity sha1-bUUk6LlV+V1PW1iFHOId1y+06VI=
 
-lru-cache@^4.0.1:
+lru-cache@^4.0.0, lru-cache@^4.0.1:
   version "4.1.3"
   resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-4.1.3.tgz#a1175cf3496dfc8436c156c334b4955992bce69c"
   integrity sha512-fFEhvcgzuIoJVUF8fYr5KR0YqxD238zgObTps31YdADwPPAp82a4M8TrckkWyx7ekNlf9aBcVn81cFwwXngrJA==
@@ -4817,6 +4827,11 @@ vue-hot-reload-api@^1.3.2:
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-1.3.3.tgz#54d22d83786a878493f639cc76bca7992a23be46"
   integrity sha1-VNItg3hqh4ST9jnMdrynmSojvkY=
 
+vue-hot-reload-api@^2.0.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.1.tgz#b2d3d95402a811602380783ea4f566eb875569a2"
+  integrity sha512-AA86yKZ5uOKz87/q1UpngEXhbRkaYg1b7HMMVRobNV1IVKqZe8oLIzo6iMocVwZXnYitlGwf2k4ZRLOZlS8oPQ==
+
 vue-material@^1.0.0-beta-10.2:
   version "1.0.0-beta-10.2"
   resolved "https://registry.yarnpkg.com/vue-material/-/vue-material-1.0.0-beta-10.2.tgz#c3effea97e0c5a0c696b0051d5ef9c6e6cf2a5ed"
@@ -4826,6 +4841,19 @@ vue-router@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.0.1.tgz#d9b05ad9c7420ba0f626d6500d693e60092cc1e9"
   integrity sha512-vLLoY452L+JBpALMP5UHum9+7nzR9PeIBCghU9ZtJ1eWm6ieUI8Zb/DI3MYxH32bxkjzYV1LRjNv4qr8d+uX/w==
+
+vue-template-compiler@^2.0.0-alpha.8:
+  version "2.5.17"
+  resolved "https://registry.yarnpkg.com/vue-template-compiler/-/vue-template-compiler-2.5.17.tgz#52a4a078c327deb937482a509ae85c06f346c3cb"
+  integrity sha512-63uI4syCwtGR5IJvZM0LN5tVsahrelomHtCxvRkZPJ/Tf3ADm1U1wG6KWycK3qCfqR+ygM5vewUvmJ0REAYksg==
+  dependencies:
+    de-indent "^1.0.2"
+    he "^1.1.0"
+
+vue-template-es2015-compiler@^1.2.2:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.6.0.tgz#dc42697133302ce3017524356a6c61b7b69b4a18"
+  integrity sha512-x3LV3wdmmERhVCYy3quqA57NJW7F3i6faas++pJQWtknWT+n7k30F4TVdHvCLn48peTJFRvCpxs3UuFPqgeELg==
 
 vue-template-validator@^1.0.1:
   version "1.1.5"
@@ -4859,6 +4887,26 @@ vueify@^8.3.5:
     through "^2.3.6"
     vue-hot-reload-api "^1.3.2"
     vue-template-validator "^1.0.1"
+
+vueify@^9.4.1:
+  version "9.4.1"
+  resolved "https://registry.yarnpkg.com/vueify/-/vueify-9.4.1.tgz#d29a9775a33c4b8a8601e186a85da2ab800ca0d6"
+  integrity sha1-0pqXdaM8S4qGAeGGqF2iq4AMoNY=
+  dependencies:
+    chalk "^1.1.1"
+    convert-source-map "^1.2.0"
+    cssnano "^3.3.2"
+    hash-sum "^1.0.2"
+    json5 "^0.5.1"
+    lru-cache "^4.0.0"
+    object-assign "^4.0.1"
+    postcss "^5.0.10"
+    postcss-selector-parser "^2.0.0"
+    source-map "^0.5.6"
+    through "^2.3.6"
+    vue-hot-reload-api "^2.0.1"
+    vue-template-compiler "^2.0.0-alpha.8"
+    vue-template-es2015-compiler "^1.2.2"
 
 whet.extend@~0.9.9:
   version "0.9.9"
