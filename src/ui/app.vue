@@ -99,9 +99,13 @@ export default Vue.extend({
 		ipcRenderer.on("/board/ping/timeout",() => {
 			this.board_connected = false;
 		});
-		setInterval(() => {
-			ipcRenderer.send("/board/ping");
-		},500);
+		let pingBoard = function() {
+			return setTimeout(() => {
+				ipcRenderer.send("/board/ping");
+				pingBoard();
+			},500);
+		}
+		pingBoard();
 		ipcRenderer.on("/board/ping/actions",(_:any, descriptor:{display:string;action:string;}[]) => {
 			descriptor.forEach((v) => {
 				this.pingActions.push(v);
