@@ -59,7 +59,7 @@ export default function init(msg: Messager) {
             }
         }
     }
-    msg.once("/config/get/etcElement",(cfg:ETCConfig) => {
+    msg.once("/config/get/init/etcElement",(cfg:ETCConfig) => {
         updateConfig(cfg);
         let oscPort = new oscPortWrapper(msg, config);
         let element = board(oscPort);
@@ -102,46 +102,23 @@ export default function init(msg: Messager) {
                             }
                         }
                         if (isMatch) {
-                            msg.once("/config/get/oscPort", (oscCfg:oscCfg) => {
+                            msg.once("/config/get/safe/etcElement/oscPort", (oscCfg:oscCfg) => {
                                 configureTX(msg,config,nif.address,(oscCfg.localPort || 57121));
                             });
-                            msg.send("/config/get","oscPort");
+                            msg.send("/config/get/safe","etcElement","oscPort");
                             break;
                         } else {
                             continue;
                         }
                     } 
                 }
-                // interfaces[key].forEach((nif) => {
-                //     if(nif.family=="IPv4") {
-                //         let netmask = nif.netmask.split(".").map((v) => Number(v));
-                //         let ip = nif.address.split(".").map((v) => Number(v));
-                //         let targetIP = config.remoteAddress.split(".").map((v) => Number(v));
-                //         let isMatch = true;
-                //         for (let i = 0; i < 4; i++) {
-                //             let matches = ( ( ( ~( ip[i] ^ targetIP[i] ) ) & netmask[i] ) == netmask[i] );
-                //             if(!matches) {
-                //                 isMatch = false;
-                //                 break;
-                //             }
-                //         }
-                //         if(!isMatch) {
-                //             continue;
-                //         }
-                //     } 
-                // });
             });
         });
     });
-    msg.emit("/config/get","etcElement",defaultConfig);
+    msg.emit("/config/get/init","etcElement",defaultConfig);
 
-    msg.on("/etcElement/getConfig",() => {
-        msg.emit("/config/get","etcElement",defaultConfig);
-    });
-
-    msg.on("/etcElement/settings/save",(cfg:ETCConfig) => {
+    msg.on("/config/set/etcElement",(cfg:ETCConfig) => {
         updateConfig(cfg);
-        msg.send("/config/set","etcElement",cfg);
     });
 
     msg.on("/home/mounted", () => {

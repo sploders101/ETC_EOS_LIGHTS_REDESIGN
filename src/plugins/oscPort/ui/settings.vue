@@ -21,7 +21,7 @@
 	import Vue from 'vue';
 	import {VueConstructor} from 'vue';
 	import {ipcRenderer} from 'electron';
-	import { oscCfg } from 'osc';
+	import { oscCfg } from 'oscPlugin';
 
     export default Vue.extend({
         data: () => {return {
@@ -35,15 +35,15 @@
 		}},
 		methods: {
 			submit: function() {
-				ipcRenderer.send("/oscPort/settings/save",this.config);
+				ipcRenderer.send("/config/set","oscPort",this.config);
 			}
 		},
 		mounted: function() {
-			ipcRenderer.on("/config/get/oscPort",(_:any,settings:oscCfg) => {
+			ipcRenderer.on("/config/get/safe/oscPort/ui/oscPort",(_:any,settings:oscCfg) => {
 				this.config = settings;
 				this.status.receivedSettings = true;
 			});
-			ipcRenderer.send("/oscPort/getConfig");
+			ipcRenderer.send("/config/get/safe","oscPort/ui","oscPort");
 		}
 	});
 </script>

@@ -40,15 +40,15 @@
 		}},
 		methods: {
 			submit: function() {
-				ipcRenderer.send("/etcElement/settings/save",this.config);
+				ipcRenderer.send("/config/set","etcElement",this.config);
 			}
 		},
 		mounted: function() {
-			ipcRenderer.on("/config/get/etcElement",(_:any,settings:ETCConfig) => {
+			ipcRenderer.on("/config/get/safe/etcElement/ui/etcElement",(_:any,settings:ETCConfig) => {
 				this.config = settings;
 				this.status.receivedSettings = true;
 			});
-			ipcRenderer.send("/etcElement/getConfig");
+			ipcRenderer.send("/config/get/safe","etcElement/ui","etcElement");
 		}
 	});
 </script>

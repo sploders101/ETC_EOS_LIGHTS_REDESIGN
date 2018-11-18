@@ -39,16 +39,12 @@ export default function init(msg: Messager) {
     })
 
     // Setup using configManager
-    msg.once("/config/get/oscPort", updateConfig);
-    msg.send("/config/get", "oscPort", defaultConfig);
+    msg.once("/config/get/init/oscPort", updateConfig);
+    msg.send("/config/get/init", "oscPort", defaultConfig);
 
     // Allow runtime config updates
-    msg.on("/oscPort/settings/save", (config: oscData.oscCfg) => {
+    msg.on("/config/set/oscPort", (config: oscData.oscCfg) => {
         updateConfig(config);
-        msg.send("/config/set", "oscPort", config);
-    });
-    msg.on("/oscPort/getConfig", () => {
-        msg.send("/config/get", "oscPort", defaultConfig);
     });
 
     msg.on("/home/mounted", () => {

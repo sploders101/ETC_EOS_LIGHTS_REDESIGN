@@ -28,15 +28,21 @@ export default function init(msg:Messager) {
         msg.send("/home/add", `${__dirname}/ui/home`);
     });
 
-    msg.on("/config/get",(configName:string, defaultConfig:object) => {
-        msg.send(`/config/get/${configName}`, (configs.has(configName)) ? (configs.get(configName)) : (defaultConfig));
+    msg.on("/config/get/init",(configName:string, defaultConfig:object) => {
+        if(!configs.has(configName)) {
+            msg.emit("/config/set",configName,defaultConfig);
+        }
+        msg.send(`/config/get/init/${configName}`, configs.get(configName));
+    });
+    msg.on("/config/get/safe",(requestID:string, configName:string) => {
+        msg.send(`/config/get/safe/${requestID}/${configName}`,configs.get(configName));
     });
     msg.on("/config/set",(configName:string, config:object) => {
         configs.set(configName, config);
         let configFile = path.join(app.getPath("userData"), "pluginconfig_"+configName + ".json");
         fs.writeFile(configFile,JSON.stringify(config,null,4)+"\n",(err) => {
             if(err) throw err;
-            msg.send("/config/set/"+configName);
+            msg.send("/config/set/"+configName,config);
         });
-    })
+    });
 }
