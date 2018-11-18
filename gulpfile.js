@@ -88,7 +88,7 @@ function downloadElectron() {
 }
 function packageNodeModules(cb) {
     Promise.all([new Promise((resolve) => {
-        let yarn = cp.spawn("yarn",["install","--production"],{
+        let yarn = cp.spawn(`yarn${(platform=="win32") ? (".cmd") : ("")}`,["install","--production"],{
             cwd: `${__dirname}/build/resources/app`,
             stdio: ["ignore","inherit","inherit"]
         });
