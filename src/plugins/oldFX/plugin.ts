@@ -69,6 +69,100 @@ export default function init(msg: Messager) {
         ]
     });
 
+    // ZCL Wrap Down White
+    msg.emit("/anime/timeline/new", {
+        name: "ZCL Wrap D",
+        linkToSubs: true,
+        linkEngine: true,
+        show: true,
+        common: {
+            targets: {
+                sub71: 1,
+                sub72: 0,
+                sub73: 0,
+                sub74: 0,
+                sub75: 0,
+                sub76: 1
+            },
+            easing: 'easeInOutQuint',
+            duration: 1,
+            loop: true
+        },
+        objects: [
+            {
+                sub71: 0,
+                sub72: 1,
+                sub73: 0,
+                sub74: 0,
+                sub75: 1,
+                sub76: 0
+            },
+            {
+                sub71: 0,
+                sub72: 0,
+                sub73: 1,
+                sub74: 1,
+                sub75: 0,
+                sub76: 0
+            },
+            {
+                sub71: 1,
+                sub72: 0,
+                sub73: 0,
+                sub74: 0,
+                sub75: 0,
+                sub76: 1
+            }
+        ]
+    });
+
+    // ZCL Wrap Up White
+    msg.emit("/anime/timeline/new", {
+        name: "ZCL Wrap U",
+        linkToSubs: true,
+        linkEngine: true,
+        show: true,
+        common: {
+            targets: {
+                sub71: 0,
+                sub72: 0,
+                sub73: 1,
+                sub74: 1,
+                sub75: 0,
+                sub76: 0
+            },
+            easing: 'easeInOutQuint',
+            duration: 1,
+            loop: true
+        },
+        objects: [
+            {
+                sub71: 0,
+                sub72: 1,
+                sub73: 0,
+                sub74: 0,
+                sub75: 1,
+                sub76: 0
+            },
+            {
+                sub71: 1,
+                sub72: 0,
+                sub73: 0,
+                sub74: 0,
+                sub75: 0,
+                sub76: 1
+            },
+            {
+                sub71: 0,
+                sub72: 0,
+                sub73: 1,
+                sub74: 1,
+                sub75: 0,
+                sub76: 0
+            }
+        ]
+    });
+
     // ZCL Shutter
     msg.emit("/anime/timeline/new", {
         name: "ZCL Shutter",
@@ -339,6 +433,72 @@ export default function init(msg: Messager) {
         objects: [
             {
                 sub54: 0
+            }
+        ]
+    });
+
+    // Par Vertical Chaser White
+    msg.emit("/anime/timeline/new", {
+        name: "Par White V Chaser",
+        linkToSubs: true,
+        linkEngine: true,
+        show: true,
+        common: {
+            targets: {
+                sub56: 1,
+                sub57: 0,
+                sub59: 0,
+                sub60: 1
+            },
+            easing: 'easeInOutQuint',
+            duration: 1,
+            loop: true
+        },
+        objects: [
+            {
+                sub56: 0,
+                sub57: 1,
+                sub59: 1,
+                sub60: 0
+            },
+            {
+                sub56: 1,
+                sub57: 0,
+                sub59: 0,
+                sub60: 1
+            }
+        ]
+    });
+
+    // Par Horizontal Chaser White
+    msg.emit("/anime/timeline/new", {
+        name: "Par White H Chaser",
+        linkToSubs: true,
+        linkEngine: true,
+        show: true,
+        common: {
+            targets: {
+                sub56: 1,
+                sub57: 1,
+                sub59: 0,
+                sub60: 0
+            },
+            easing: 'easeInOutQuint',
+            duration: 1,
+            loop: true
+        },
+        objects: [
+            {
+                sub56: 0,
+                sub57: 0,
+                sub59: 1,
+                sub60: 1
+            },
+            {
+                sub56: 1,
+                sub57: 1,
+                sub59: 0,
+                sub60: 0
             }
         ]
     });
