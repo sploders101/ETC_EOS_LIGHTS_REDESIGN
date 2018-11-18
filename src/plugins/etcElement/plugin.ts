@@ -10,7 +10,7 @@
 // └─────────┘
 import board from './etc_eos_element';
 import { Messager } from '../loader';
-import { oscMsg, oscCfg } from 'osc';
+import { oscMsg, oscCfg } from 'oscPlugin';
 import { oscDest } from 'oscPlugin';
 import { EventEmitter } from 'events';
 import { ETCConfig } from './typings/config';

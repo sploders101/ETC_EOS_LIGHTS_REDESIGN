@@ -7,4 +7,15 @@ declare module 'oscPlugin' {
         address: string;
         args?: any;
     }
+    export interface oscCfg {
+        localAddress: string;
+        localPort: number;
+        // metadata?: boolean;
+        // remotePort?: number;
+        // remoteAddress?: string;
+        // broadcast?: boolean;
+        // multicastTTL?: number;
+        // multicastMembership?: string[];
+        // socketId?: number;
+    }
 }

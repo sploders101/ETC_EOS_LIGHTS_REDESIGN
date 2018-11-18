@@ -38,18 +38,6 @@ declare module 'osc-min' {
             | "array";
         value: string | number | Buffer | boolean | null | UNIXTime | oscArg[];
     }
-
-    export interface oscCfg {
-        localAddress: string;
-        localPort: number;
-        // metadata?: boolean;
-        // remotePort?: number;
-        // remoteAddress?: string;
-        // broadcast?: boolean;
-        // multicastTTL?: number;
-        // multicastMembership?: string[];
-        // socketId?: number;
-    }
     
     export function fromBuffer(inBuf:Buffer,strict?:boolean): oscMsg;
     

@@ -12,7 +12,7 @@ let defaultConfig = {
 
 export default function init(msg: Messager) {
     let oscPort:udp.Socket;
-    function updateConfig(config: osc.oscCfg) {
+    function updateConfig(config: oscData.oscCfg) {
         if(oscPort) oscPort.close();
         oscPort = udp.createSocket('udp4');
         oscPort.on("error", (err) => {
@@ -43,7 +43,7 @@ export default function init(msg: Messager) {
     msg.send("/config/get", "oscPort", defaultConfig);
 
     // Allow runtime config updates
-    msg.on("/oscPort/settings/save", (config: osc.oscCfg) => {
+    msg.on("/oscPort/settings/save", (config: oscData.oscCfg) => {
         updateConfig(config);
         msg.send("/config/set", "oscPort", config);
     });
