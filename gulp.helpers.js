@@ -74,7 +74,7 @@ class Beacon extends Transform {
             // beacon:if(expression)
             // ...
             // beacon:endif
-            contents = contents.replace(/(\s*\/\/ beacon):if\((.*)\)((?:\n|.)*?)(\s*\/\/ beacon):endif/mg, (_, p1, p2, p3, p4) => {
+            contents = contents.replace(/(\s*\/\/ beacon):if\((.*)\)((?:\r|\n|.)*?)(\s*\/\/ beacon):endif/mg, (_, p1, p2, p3, p4) => {
                 return (vm.runInContext(p2, this.ctx)) ? (`${p1}:processed${p3}${p4}:processed`) : (`${p1}:processed${p3.replace(/(^\s*)(\S)/gm,(_,p1,p2) => `${p1}// ${p2}`)}${p4}:processed`);
             });
 
