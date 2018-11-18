@@ -34,4 +34,8 @@ declare module 'oscPlugin' {
         remotePort: number;
         remoteAddress: string;
     }
+    export interface oscMsg {
+        address: string;
+        args?: any;
+    }
 }

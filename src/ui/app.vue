@@ -99,9 +99,13 @@ export default Vue.extend({
 		ipcRenderer.on("/board/ping/timeout",() => {
 			this.board_connected = false;
 		});
-		setInterval(() => {
-			ipcRenderer.send("/board/ping");
-		},500);
+		let pingBoard = function() {
+			return setTimeout(() => {
+				ipcRenderer.send("/board/ping");
+				pingBoard();
+			},500);
+		}
+		pingBoard();
 		ipcRenderer.on("/board/ping/actions",(_:any, descriptor:{display:string;action:string;}[]) => {
 			descriptor.forEach((v) => {
 				this.pingActions.push(v);
@@ -116,14 +120,14 @@ export default Vue.extend({
 	// beacon:if(production)
 		@import "../node_modules/vue-material/dist/vue-material.min.css";
 		@import "../node_modules/vue-material/dist/theme/default-dark.css";
-		@import "../node_modules/material-design-icons/iconfont/material-icons.css";
+		@import "../node_modules/material-design-icons-iconfont/dist/material-design-icons.css";
 	// beacon:endif
 	// beacon:if(!production)
 		@import "../../node_modules/vue-material/dist/vue-material.min.css";
 		@import "../../node_modules/vue-material/dist/theme/default-dark.css";
-		@import "../../node_modules/material-design-icons/iconfont/material-icons.css";
+		@import "../../node_modules/material-design-icons-iconfont/dist/material-design-icons.css";
 	// beacon:endif
-	@import "https://fonts.googleapis.com/icon?family=Material+Icons";
+	// @import "https://fonts.googleapis.com/icon?family=Material+Icons";
 
 	.md-app {
 		height: 100vh;
