@@ -4,13 +4,13 @@
             <fx-toggle v-for="effect in effects" :key="effect.name" :assign.sync="assignMode" :effect="effect.name" :enabled.sync="effect.state">{{ effect.displayName }}</fx-toggle>
         </div>
         <div class="clicks">
-            <div class="defaultClick" @click="assignDefaultClick()" @dblclick="assignAllDefaultClick()">
+            <div class="defaultclick" @click="assignDefaultClick()" @dblclick="assignAllDefaultClick()">
                 <div class="name">
                     Default
                 </div>
                 <div class="assign" v-if="assignMode=='default'"><div></div></div>
             </div>
-            <fx-click v-for="click in clicks" :key="click.name" :defaultClick="defaultClick" :click="click.name" :assign.sync="assignMode" :default.sync="click.state">{{ click.displayName }}</fx-click>
+            <fx-click v-for="click in clicks" :key="click.name" :defaultclick="defaultclick" :click="click.name" :assign.sync="assignMode" :default.sync="click.state">{{ click.displayName }}</fx-click>
         </div>
         <div class="secondaryClicks"></div>
     </div>
@@ -31,7 +31,7 @@
                 effects: [] as fxUIDescriptor[],
                 clicks: [] as fxUIDescriptor[],
                 assignMode: false as boolean | string,
-                defaultClick: "" as string
+                defaultclick: "" as string
             }
         },
         methods: {
@@ -57,7 +57,7 @@
                 this.clicks.push(clickD);
             });
             ipcRenderer.on("/fx/click/default",(_:any, defaultFX:string) => {
-                this.defaultClick = defaultFX;
+                this.defaultclick = defaultFX;
             });
             ipcRenderer.send("/fxui/mounted");
         }
@@ -83,7 +83,7 @@
         align-items: flex-start;
     }
 
-    .defaultClick {
+    .defaultclick {
         display: grid;
         grid-template-columns: [assign] 20% [end-assign] 5% [label] 50% [end-label] 5% [tap] 20% [end-tap];
         grid-template-rows: [top] 100% [bottom];

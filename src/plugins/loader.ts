@@ -4,11 +4,12 @@
 import Emitter = require("events");
 import {ipcMain, BrowserWindow} from 'electron';
 export class Messager extends Emitter {
-    mainWindow:BrowserWindow;
+    mainWindow:BrowserWindow | null;
     constructor(mw:BrowserWindow) {
         super();
         this.setMaxListeners(999);
         this.mainWindow = mw;
+        this.mainWindow.on("closed",() => this.mainWindow = null);
         let oldEmit = ipcMain.emit;
         // Override ipcMain's emit function to bridge it to the global messager
         ipcMain.emit = (channel: string, event: any, ...msgs: any) => {

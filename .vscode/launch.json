@@ -5,27 +5,14 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "electron",
-            "request": "launch",
-            "name": "Launch Electron",
-            "sourceMaps": true,
-            "appDir": "${workspaceFolder}",
-            "cwd": "${workspaceFolder}",
-            "preLaunchTask": "gulp"
-        },
-        {
             "type": "node",
             "request": "launch",
-            "name": "Electron Main",
-            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron-forge-vscode-nix",
-            "windows": {
-                "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron-forge-vscode-win.cmd"
-            },
-            // runtimeArgs will be passed directly to your Electron application
-            "runtimeArgs": [
-                
-            ],
-            "cwd": "${workspaceFolder}"
+            "name": "Launch Electron",
+            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+            "runtimeArgs": ["--inspect","${workspaceFolder}"],            
+            "sourceMaps": true,
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "gulp"
         }
     ]
 }

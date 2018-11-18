@@ -113,9 +113,16 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-	@import "../../node_modules/vue-material/dist/vue-material.min.css";
-	@import "../../node_modules/vue-material/dist/theme/default-dark.css";
-	@import "../../node_modules/material-design-icons/iconfont/material-icons.css";
+	// beacon:if(production)
+		@import "../node_modules/vue-material/dist/vue-material.min.css";
+		@import "../node_modules/vue-material/dist/theme/default-dark.css";
+		@import "../node_modules/material-design-icons/iconfont/material-icons.css";
+	// beacon:endif
+	// beacon:if(!production)
+		@import "../../node_modules/vue-material/dist/vue-material.min.css";
+		@import "../../node_modules/vue-material/dist/theme/default-dark.css";
+		@import "../../node_modules/material-design-icons/iconfont/material-icons.css";
+	// beacon:endif
 	@import "https://fonts.googleapis.com/icon?family=Material+Icons";
 
 	.md-app {
