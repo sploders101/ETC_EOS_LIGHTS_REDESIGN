@@ -33,28 +33,6 @@ export default function init(msg: Messager) {
         let rawMsg = osc.toBuffer({
             address: oscMsg.address,
             args: oscMsg.args
-            // args: (oscMsg.args) ? (oscMsg.args.map((e: any) => {
-            //     if (typeof (e) == "object") { // Arguments are already typed...
-            //         return e as osc.oscArg;
-            //     } else { // If arguments are not typed...
-            //         // Auto-type them
-            //         let type: string = (() => {
-            //             if (typeof (e) == "string") return "string";
-            //             if (typeof (e) == "boolean") return e.toString();
-            //             // Use typed variables for integers
-            //             // if(typeof(e)=="number" && Math.floor(e) == e) return "integer";
-            //             if (typeof (e) == "number" && Math.floor(e) != e) return "float";
-            //             if (Buffer.isBuffer(e)) return "blob";
-            //             return "null";
-            //             // I can't find any documentation on bangs. If someone sends me some better docs, I will add bangs
-            //         })();
-
-            //         return {
-            //             type,
-            //             value: e,
-            //         } as osc.oscArg;
-            //     }
-            // })) : (null)
         });
 
         oscPort.send(rawMsg,dest.remotePort,dest.remoteAddress);
