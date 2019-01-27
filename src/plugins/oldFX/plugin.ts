@@ -28,7 +28,7 @@ export default function init(msg: Messager) {
                 sub75: 0,
                 sub76: 1
             },
-            easing: 'easeInOutQuint',
+            easing: 'easeInOutQuad',
             duration: 1,
             loop: true
         },
@@ -84,7 +84,7 @@ export default function init(msg: Messager) {
                 sub75: 0,
                 sub76: 1
             },
-            easing: 'easeInOutQuint',
+            easing: 'easeInOutQuad',
             duration: 1,
             loop: true
         },
@@ -131,7 +131,7 @@ export default function init(msg: Messager) {
                 sub75: 0,
                 sub76: 0
             },
-            easing: 'easeInOutQuint',
+            easing: 'easeInOutQuad',
             duration: 1,
             loop: true
         },
@@ -178,7 +178,7 @@ export default function init(msg: Messager) {
                 sub95: 0,
                 sub96: 0
             },
-            easing: 'easeInOutQuint',
+            easing: 'easeInOutQuad',
             duration: 1,
             loop: true
         },
@@ -249,7 +249,7 @@ export default function init(msg: Messager) {
                 sub85: 0,
                 sub86: 0
             },
-            easing: 'easeInOutQuint',
+            easing: 'easeInOutQuad',
             duration: 1,
             loop: true
         },
@@ -318,7 +318,7 @@ export default function init(msg: Messager) {
                 sub59: 0,
                 sub60: 1
             },
-            easing: 'easeInOutQuint',
+            easing: 'easeInOutQuad',
             duration: 1,
             loop: true
         },
@@ -363,7 +363,7 @@ export default function init(msg: Messager) {
                 sub364: 0,
                 sub365: 1
             },
-            easing: 'easeInOutQuint',
+            easing: 'easeInOutQuad',
             duration: 1,
             loop: true
         },
@@ -405,7 +405,7 @@ export default function init(msg: Messager) {
             targets: {
                 sub55: 1
             },
-            easing: 'easeInOutQuint',
+            easing: 'easeInOutQuad',
             duration: 1,
             loop: true
         },
@@ -426,7 +426,7 @@ export default function init(msg: Messager) {
             targets: {
                 sub54: 1
             },
-            easing: 'easeInOutQuint',
+            easing: 'easeInOutQuad',
             duration: 1,
             loop: true
         },
@@ -450,7 +450,7 @@ export default function init(msg: Messager) {
                 sub59: 0,
                 sub60: 1
             },
-            easing: 'easeInOutQuint',
+            easing: 'easeInOutQuad',
             duration: 1,
             loop: true
         },
@@ -483,7 +483,7 @@ export default function init(msg: Messager) {
                 sub59: 0,
                 sub60: 0
             },
-            easing: 'easeInOutQuint',
+            easing: 'easeInOutQuad',
             duration: 1,
             loop: true
         },

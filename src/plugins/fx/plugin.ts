@@ -6,7 +6,8 @@ import { fxUIDescriptor } from '../fxUI/ui/typings';
 interface timelineDescriptor {
     start?: boolean;
     name: string;
-    linkToSubs: boolean;
+	linkToSubs: boolean;
+	linkToParams: boolean;
     linkEngine: boolean;
     show: boolean;
     common: anime.AnimeAnimParams;
@@ -15,6 +16,11 @@ interface timelineDescriptor {
 interface SubKey {
     key: string;
     sub: number;
+}
+interface ParamKey {
+	key: string;
+	channel: number;
+	param: string;
 }
 
 let timelines = new Map<string, anime.AnimeTimelineInstance>();
@@ -29,7 +35,8 @@ export default function init(msg:Messager) {
         let enabled:boolean = false;
 
         // Create an array of mappings to link anime with submasters
-        let keys:SubKey[];
+		let keys:SubKey[];
+		let paramKeys:ParamKey[];
         if (desc.linkToSubs) {
             keys = Object.keys(desc.common.targets as any).map((v) => {
                 const match = /^sub([0-9]+)$/g.exec(v);
@@ -44,10 +51,26 @@ export default function init(msg:Messager) {
                         sub: -1
                     };
                 }
-            }).filter((v) => {
-                return (v.sub >= 0);
-            });
-        }
+            }).filter((v) => v.key != "null");
+		}
+		if (desc.linkToParams) {
+			paramKeys = Object.keys(desc.common.targets as any).map((v) => {
+				const match = /^c([0-9]+)p(\w+)$/g.exec(v);
+				if(match) {
+					return {
+						key: v,
+						channel: Number(match[1]),
+						param: match[2]
+					} as ParamKey
+				} else {
+					return {
+						key: "null",
+						channel: 0,
+						param: "null"
+					} as ParamKey
+				}
+			}).filter((v) => v.key != "null");
+		}
 
         // Add hooks to announce our existance to the UI
         if(desc.show) {
@@ -73,7 +96,14 @@ export default function init(msg:Messager) {
                         const e = keys[i];
                         msg.emit("/board/mixer", "set", `fx:${desc.name}`, e.sub, desc.common.targets![e.key]);
                     }
-                }
+				}
+				if(desc.linkToParams) {
+					for (let i = 0; i < paramKeys.length; i++) {
+						const e = paramKeys[i];
+						msg.emit("/board/command", "setParam", e.channel, e.param, desc.common.targets![e.key]);
+						// msg.emit("/board/mixer", "setParam", `fx:${desc.name}`, e, )
+					}
+				}
             },
             begin: function() {
                 msg.send(`/anime/${desc.name}/event/begin`);

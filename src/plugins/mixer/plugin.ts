@@ -38,8 +38,18 @@ export default function init(msg:Messager) {
                 break;
             case "disable":
                 updateLayerMix(identifier);
-                // subLayers.splice(subLayers.indexOf(identifier), 1);
-                msg.emit(`/anime/mixer:${identifier}/setDirection`, true, true);
+				msg.emit(`/anime/mixer:${identifier}/setDirection`, true, true);
+				function checkOff() {
+					msg.once(`/anime/mixer:${identifier}/event/update`, (obj) => {
+						if(obj.weightVal === 0) {
+							subLayers.splice(subLayers.indexOf(identifier), 1);
+							updateLayerMix(identifier);
+						} else {
+							checkOff();
+						}
+					});
+				}
+				checkOff();
                 break;
             case "remove":
                 subLayers.splice(subLayers.indexOf(identifier), 1);
